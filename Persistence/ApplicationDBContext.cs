@@ -1,4 +1,3 @@
-using DistriPack.Models;
 using DistripackAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,20 +7,26 @@ namespace DistripackAPI.Persistence
     public class ApplicationDbContext : DbContext
     {
         public DbSet<Producto> Productos { get; set; }
-        // public DbSet<Pedido> Pedidos { get; set; }
-        // public DbSet<Cliente> Clientes { get; set; }
+
+        public DbSet<Pedido> Pedidos { get; set; }
+
+        public DbSet<Cliente> Clientes { get; set; }
+
         public DbSet<Categoria> Categorias { get; set; }
-        // public DbSet<PedidoDetalle> Detalles { get; set; }
+
+        public DbSet<Detalle> Detalles { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options) { }
+            : base(options)
+        {
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<ProductoCategoria>()
-            .HasKey(pc => new { pc.CategoriaId, pc.ProductoId, pc.ProductoSku });
+                .HasKey(pc => new { pc.CategoriaId, pc.ProductoId, pc.ProductoSku });
 
             modelBuilder.Entity<ProductoCategoria>()
                 .HasOne(pc => pc.Producto)
@@ -48,6 +53,22 @@ namespace DistripackAPI.Persistence
             modelBuilder.Entity<Categoria>().Property(p => p.EsRubro).IsRequired();
             modelBuilder.Entity<Categoria>().Property(p => p.Nombre).HasMaxLength(50).IsRequired();
 
+            modelBuilder.Entity<Pedido>().ToTable("Pedidos");
+            modelBuilder.Entity<Pedido>().Property(p => p.Estado).IsRequired();
+            modelBuilder.Entity<Pedido>().Property(p => p.Detalles).IsRequired();
+            modelBuilder.Entity<Pedido>().Property(p => p.ClienteId).IsRequired();
+            modelBuilder.Entity<Pedido>().Property(p => p.FechaCreacion).IsRequired();
+
+            modelBuilder.Entity<Detalle>().ToTable("PedidoDetalles");
+            modelBuilder.Entity<Detalle>().HasKey(c => new { c.PedidoId, c.Id });
+            modelBuilder.Entity<Detalle>().Property(p => p.Cantidad).IsRequired();
+            modelBuilder.Entity<Detalle>().Property(p => p.PrecioUnitario).IsRequired();
+            modelBuilder.Entity<Detalle>().Property(p => p.ProductoId).IsRequired();
+            modelBuilder.Entity<Detalle>().Property(p => p.ProductoSku).IsRequired();
+
+            modelBuilder.Entity<Cliente>().ToTable("Clientes");
+            modelBuilder.Entity<Cliente>().Property(p => p.Alias).IsRequired();
+            modelBuilder.Entity<Cliente>().Property(p => p.Mail).IsRequired();
         }
     }
 }

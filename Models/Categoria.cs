@@ -1,7 +1,7 @@
-using DistriPack.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace DistripackAPI.Models
 {
@@ -19,6 +19,11 @@ namespace DistripackAPI.Models
         public ICollection<ProductoCategoria> ProductoCategorias { get; set; }
 
         public bool EsRubro { get; set; }
+
+        public IReadOnlyCollection<Producto> Productos
+        {
+            get { return this.ProductoCategorias.Select(x => x.Producto).ToList(); }
+        }
     }
 }
 

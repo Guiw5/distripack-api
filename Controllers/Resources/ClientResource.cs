@@ -1,0 +1,26 @@
+﻿using System;
+
+namespace DistripackAPI.Controllers.Resources
+{
+    public class ClientResource
+    {
+        public String Nick { get; set; }
+
+        public String Email { get; set; }
+
+        //public String Nombre { get; set; }
+
+        //public String RazonSocial { get; set; }        
+
+        //public String Cuit { get; set; }
+
+        //public String Dni { get; set; }
+
+        //public String UsuarioId { get; set; }
+
+        //public String Telefono { get; set; }
+
+        //public String Direcion { get; set; }
+
+    }
+}
