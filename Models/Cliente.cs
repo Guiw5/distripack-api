@@ -1,6 +1,6 @@
 using System;
 
-namespace DistriPack.Models
+namespace DistripackAPI.Models
 {
     public class Cliente
     {
@@ -21,6 +21,10 @@ namespace DistriPack.Models
         public String Cuit { get; set; }
 
         public String Direccion { get; set; }
+
+        public String TelefonoFijo { get; set; }
+
+        public String Celular { get; set; }
 
         public String Localidad { get; set; }
 

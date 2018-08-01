@@ -1,34 +1,33 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
-namespace DistriPack.Models
+namespace DistripackAPI.Models
 {
     public class Pedido
     {
         public Pedido()
         {
-            Detalles = new Collection<PedidoDetalle>();
+            Detalles = new Collection<Detalle>();
         }
+
+
         public int Id { get; set; }
 
         public Cliente Cliente { get; set; }
 
-        [Required]
         public int ClienteId { get; set; }
 
         public DateTime FechaCreacion { get; set; }
 
         public DateTime? FechaEntrega { get; set; }
 
-        [Required]
         public EstadoPedido Estado { get; set; }
 
-        [Required]
-        public ICollection<PedidoDetalle> Detalles { get; set; }
+        public ICollection<Detalle> Detalles { get; set; }
 
-        public Double PrecioTotal { get; set; }
+        public Double Subtotal => Detalles.Sum(x => x.Subtotal);
 
         public Double Descuento { get; set; }
     }

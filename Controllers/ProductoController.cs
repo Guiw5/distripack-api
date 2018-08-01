@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DistripackAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/products")]
     [ApiController]
     public class ProductoController : ControllerBase
     {
@@ -23,24 +23,24 @@ namespace DistripackAPI.Controllers
         }
 
         //[Authorize]
-        [HttpGet("api/products")]
-        public async Task<IEnumerable<ProductoResource>> GetProductsAsync()
+        [HttpGet]
+        public async Task<IEnumerable<ProductResource>> GetProductsAsync()
         {
             var products = await context.Productos
                 .Include(p => p.ProductoCategorias)
                 .ThenInclude(c => c.Categoria)
                 .ToListAsync();
-            return mapper.Map<List<Producto>, List<ProductoResource>>(products);
+            return mapper.Map<List<Producto>, List<ProductResource>>(products);
         }
 
         [HttpGet("api/categories")]
-        public async Task<IEnumerable<CategoriaResource>> GetCategoriesAsync()
+        public async Task<IEnumerable<CategoryResource>> GetCategoriesAsync()
         {
             var categories = await context.Categorias
                 .Include(p => p.ProductoCategorias)
                 .ThenInclude(c => c.Producto)
                 .ToListAsync();
-            return mapper.Map<List<Categoria>, List<CategoriaResource>>(categories);
+            return mapper.Map<List<Categoria>, List<CategoryResource>>(categories);
         }
     }
 }
