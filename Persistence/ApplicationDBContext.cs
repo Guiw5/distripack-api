@@ -29,14 +29,16 @@ namespace DistripackAPI.Persistence
                 .HasKey(pc => new { pc.CategoriaId, pc.ProductoId, pc.ProductoSku });
 
             modelBuilder.Entity<ProductoCategoria>()
-                .HasOne(pc => pc.Producto)
-                .WithMany(p => p.ProductoCategorias)
-                .HasForeignKey(pc => new { pc.ProductoId, pc.ProductoSku });
-
-            modelBuilder.Entity<ProductoCategoria>()
                 .HasOne(pc => pc.Categoria)
                 .WithMany(c => c.ProductoCategorias)
-                .HasForeignKey(pc => pc.CategoriaId);
+                .HasForeignKey(pc => pc.CategoriaId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ProductoCategoria>()
+                .HasOne(pc => pc.Producto)
+                .WithMany(p => p.ProductoCategorias)
+                .HasForeignKey(pc => new { pc.ProductoId, pc.ProductoSku })
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Producto>().ToTable("Productos");
             modelBuilder.Entity<Producto>().HasKey(c => new { c.Id, c.Sku });
@@ -50,17 +52,32 @@ namespace DistripackAPI.Persistence
             modelBuilder.Entity<Producto>().Property(p => p.Precio).IsRequired();
             modelBuilder.Entity<Producto>().Ignore(p => p.Categorias);
 
+
+            modelBuilder.Entity<Categoria>().ToTable("Categorias");
+            modelBuilder.Entity<Categoria>().HasKey(p => p.Id);
             modelBuilder.Entity<Categoria>().Property(p => p.EsRubro).IsRequired();
             modelBuilder.Entity<Categoria>().Property(p => p.Nombre).HasMaxLength(50).IsRequired();
 
             modelBuilder.Entity<Pedido>().ToTable("Pedidos");
+            modelBuilder.Entity<Pedido>()
+                .HasMany(p => p.Detalles)
+                .WithOne(p => p.Pedido)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Pedido>().HasOne(p => p.Cliente);
             modelBuilder.Entity<Pedido>().Property(p => p.Estado).IsRequired();
-            modelBuilder.Entity<Pedido>().Property(p => p.Detalles).IsRequired();
             modelBuilder.Entity<Pedido>().Property(p => p.ClienteId).IsRequired();
             modelBuilder.Entity<Pedido>().Property(p => p.FechaCreacion).IsRequired();
 
             modelBuilder.Entity<Detalle>().ToTable("PedidoDetalles");
             modelBuilder.Entity<Detalle>().HasKey(c => new { c.PedidoId, c.Id });
+            modelBuilder.Entity<Detalle>()
+                .HasOne(p => p.Pedido)
+                .WithMany(p => p.Detalles)
+                .HasForeignKey(p => p.PedidoId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Detalle>().HasOne(p => p.Producto);
             modelBuilder.Entity<Detalle>().Property(p => p.Cantidad).IsRequired();
             modelBuilder.Entity<Detalle>().Property(p => p.PrecioUnitario).IsRequired();
             modelBuilder.Entity<Detalle>().Property(p => p.ProductoId).IsRequired();
