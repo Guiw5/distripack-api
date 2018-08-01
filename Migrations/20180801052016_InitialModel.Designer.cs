@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DistripackAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180731204507_InitialModel")]
+    [Migration("20180801052016_InitialModel")]
     partial class InitialModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,6 +34,85 @@ namespace DistripackAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categorias");
+                });
+
+            modelBuilder.Entity("DistripackAPI.Models.Cliente", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Alias")
+                        .IsRequired();
+
+                    b.Property<string>("Celular");
+
+                    b.Property<string>("CodigoPostal");
+
+                    b.Property<string>("Cuit");
+
+                    b.Property<string>("Direccion");
+
+                    b.Property<string>("Localidad");
+
+                    b.Property<string>("Mail")
+                        .IsRequired();
+
+                    b.Property<string>("Nombre");
+
+                    b.Property<string>("RazonSocial");
+
+                    b.Property<string>("TelefonoFijo");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Clientes");
+                });
+
+            modelBuilder.Entity("DistripackAPI.Models.Detalle", b =>
+                {
+                    b.Property<int>("PedidoId");
+
+                    b.Property<int>("Id");
+
+                    b.Property<int>("Cantidad");
+
+                    b.Property<double>("Descuento");
+
+                    b.Property<double>("PrecioUnitario");
+
+                    b.Property<int>("ProductoId");
+
+                    b.Property<int>("ProductoSku");
+
+                    b.HasKey("PedidoId", "Id");
+
+                    b.HasIndex("ProductoId", "ProductoSku");
+
+                    b.ToTable("PedidoDetalles");
+                });
+
+            modelBuilder.Entity("DistripackAPI.Models.Pedido", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ClienteId");
+
+                    b.Property<double>("Descuento");
+
+                    b.Property<int>("Estado");
+
+                    b.Property<DateTime>("FechaCreacion");
+
+                    b.Property<DateTime?>("FechaEntrega");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClienteId");
+
+                    b.ToTable("Pedidos");
                 });
 
             modelBuilder.Entity("DistripackAPI.Models.Producto", b =>
@@ -94,6 +173,27 @@ namespace DistripackAPI.Migrations
                     b.HasIndex("ProductoId", "ProductoSku");
 
                     b.ToTable("ProductoCategoria");
+                });
+
+            modelBuilder.Entity("DistripackAPI.Models.Detalle", b =>
+                {
+                    b.HasOne("DistripackAPI.Models.Pedido", "Pedido")
+                        .WithMany("Detalles")
+                        .HasForeignKey("PedidoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DistripackAPI.Models.Producto", "Producto")
+                        .WithMany()
+                        .HasForeignKey("ProductoId", "ProductoSku")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("DistripackAPI.Models.Pedido", b =>
+                {
+                    b.HasOne("DistripackAPI.Models.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("DistripackAPI.Models.ProductoCategoria", b =>
