@@ -1,5 +1,3 @@
-using DistriPack.Models;
-
 namespace DistripackAPI.Models
 {
     public class ProductoCategoria
