@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace DistripackAPI.Controllers.Resources
 {
-    public class ProductResource
+    public class Product
     {
-        public ProductResource()
+        public Product()
         {
             CategoriesId = new Collection<int>();
         }
 
+        [Required]
         public int Id { get; set; }
 
         public int Sku { get; set; }

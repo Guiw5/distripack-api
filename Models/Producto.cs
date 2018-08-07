@@ -16,9 +16,13 @@ namespace DistripackAPI.Models
 
         public int Sku { get; set; }
 
-        public String Codigo => "COD" + $"{Id + Sku,10:D5}";
-
         public String Alias { get; set; }
+
+        public String Nombre { get; set; }
+
+        public String Codigo { get; set; }
+
+        public String AliasSku { get; set; }
 
         public String Descripcion { get; set; }
 

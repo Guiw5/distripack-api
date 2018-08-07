@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DistripackAPI.Models
 {
@@ -12,7 +11,6 @@ namespace DistripackAPI.Models
 
         public Pedido Pedido { get; set; }
 
-        [ForeignKey("ProductoId, ProductoSku")]
         public Producto Producto { get; set; }
 
         public int ProductoId { get; set; }
