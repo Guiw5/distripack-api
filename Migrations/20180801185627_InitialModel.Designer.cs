@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DistripackAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180801052016_InitialModel")]
+    [Migration("20180801185627_InitialModel")]
     partial class InitialModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

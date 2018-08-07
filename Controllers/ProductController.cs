@@ -11,12 +11,12 @@ namespace DistripackAPI.Controllers
 {
     [Route("api/products")]
     [ApiController]
-    public class ProductoController : ControllerBase
+    public class ProductController : ControllerBase
     {
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
 
-        public ProductoController(ApplicationDbContext context, IMapper mapper)
+        public ProductController(ApplicationDbContext context, IMapper mapper)
         {
             this.mapper = mapper;
             this.context = context;
@@ -24,23 +24,23 @@ namespace DistripackAPI.Controllers
 
         //[Authorize]
         [HttpGet]
-        public async Task<IEnumerable<ProductResource>> GetProductsAsync()
+        public async Task<IEnumerable<Product>> GetProductsAsync()
         {
             var products = await context.Productos
                 .Include(p => p.ProductoCategorias)
                 .ThenInclude(c => c.Categoria)
                 .ToListAsync();
-            return mapper.Map<List<Producto>, List<ProductResource>>(products);
+            return mapper.Map<List<Producto>, List<Product>>(products);
         }
 
         [HttpGet("api/categories")]
-        public async Task<IEnumerable<CategoryResource>> GetCategoriesAsync()
+        public async Task<IEnumerable<Category>> GetCategoriesAsync()
         {
             var categories = await context.Categorias
                 .Include(p => p.ProductoCategorias)
                 .ThenInclude(c => c.Producto)
                 .ToListAsync();
-            return mapper.Map<List<Categoria>, List<CategoryResource>>(categories);
+            return mapper.Map<List<Categoria>, List<Category>>(categories);
         }
     }
 }

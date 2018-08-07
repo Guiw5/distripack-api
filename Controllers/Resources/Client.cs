@@ -1,11 +1,14 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace DistripackAPI.Controllers.Resources
 {
-    public class ClientResource
+    public class Client
     {
+        [Required]
         public String Nick { get; set; }
 
+        [Required]
         public String Email { get; set; }
 
         //public String Nombre { get; set; }

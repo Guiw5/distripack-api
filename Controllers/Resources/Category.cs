@@ -4,15 +4,15 @@ using System.Collections.ObjectModel;
 
 namespace DistripackAPI.Controllers.Resources
 {
-    public class CategoryResource
+    public class Category
     {
-        public CategoryResource() => Products = new Collection<ProductResource>();
+        public Category() => Products = new Collection<Product>();
 
         public byte Id { get; set; }
 
         public String Name { get; set; }
 
-        public ICollection<ProductResource> Products { get; set; }
+        public ICollection<Product> Products { get; set; }
 
         public bool IsCommercialType { get; set; }
     }
