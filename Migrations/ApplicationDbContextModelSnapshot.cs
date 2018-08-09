@@ -19,191 +19,220 @@ namespace DistripackAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("DistripackAPI.Models.Categoria", b =>
+            modelBuilder.Entity("DistripackAPI.Models.Category", b =>
                 {
                     b.Property<byte>("Id");
 
-                    b.Property<bool>("EsRubro");
+                    b.Property<bool>("IsCommercialType");
 
-                    b.Property<string>("Nombre")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50);
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categorias");
+                    b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("DistripackAPI.Models.Cliente", b =>
+            modelBuilder.Entity("DistripackAPI.Models.Client", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Alias")
-                        .IsRequired();
+                    b.Property<string>("Address");
 
-                    b.Property<string>("Celular");
+                    b.Property<string>("BusinessName");
 
-                    b.Property<string>("CodigoPostal");
+                    b.Property<string>("CelPhone");
 
                     b.Property<string>("Cuit");
 
-                    b.Property<string>("Direccion");
-
-                    b.Property<string>("Localidad");
+                    b.Property<string>("Location");
 
                     b.Property<string>("Mail")
                         .IsRequired();
 
-                    b.Property<string>("Nombre");
+                    b.Property<string>("Name");
 
-                    b.Property<string>("RazonSocial");
+                    b.Property<string>("Nick")
+                        .IsRequired();
 
-                    b.Property<string>("TelefonoFijo");
+                    b.Property<string>("Phone");
+
+                    b.Property<string>("PostalCode");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clientes");
+                    b.ToTable("Clients");
                 });
 
-            modelBuilder.Entity("DistripackAPI.Models.Detalle", b =>
+            modelBuilder.Entity("DistripackAPI.Models.Item", b =>
                 {
-                    b.Property<int>("PedidoId");
+                    b.Property<int>("OrderId");
 
                     b.Property<int>("Id");
 
-                    b.Property<int>("Cantidad");
+                    b.Property<double>("Discount");
 
-                    b.Property<double>("Descuento");
+                    b.Property<int>("Quantity");
 
-                    b.Property<double>("PrecioUnitario");
+                    b.Property<int>("SkuId");
 
-                    b.Property<int>("ProductoId");
+                    b.Property<double>("UnitPrice");
 
-                    b.Property<int>("ProductoSku");
+                    b.HasKey("OrderId", "Id");
 
-                    b.HasKey("PedidoId", "Id");
+                    b.HasIndex("SkuId");
 
-                    b.HasIndex("ProductoId", "ProductoSku");
-
-                    b.ToTable("PedidoDetalles");
+                    b.ToTable("Items");
                 });
 
-            modelBuilder.Entity("DistripackAPI.Models.Pedido", b =>
+            modelBuilder.Entity("DistripackAPI.Models.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ClienteId");
+                    b.Property<int>("ClientId");
 
-                    b.Property<double>("Descuento");
+                    b.Property<DateTime>("CreatedAt");
 
-                    b.Property<int>("Estado");
+                    b.Property<DateTime?>("DeliveredAt");
 
-                    b.Property<DateTime>("FechaCreacion");
+                    b.Property<DateTime?>("DeliveryDate");
 
-                    b.Property<DateTime?>("FechaEntrega");
+                    b.Property<double>("Discount");
+
+                    b.Property<int>("State");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClienteId");
+                    b.HasIndex("ClientId");
 
-                    b.ToTable("Pedidos");
+                    b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("DistripackAPI.Models.Producto", b =>
+            modelBuilder.Entity("DistripackAPI.Models.Product", b =>
                 {
-                    b.Property<int>("Id");
-
-                    b.Property<int>("Sku");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Alias")
                         .IsRequired()
                         .HasMaxLength(100);
 
-                    b.Property<int>("Cantidad");
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(100);
 
-                    b.Property<string>("Capacidad")
+                    b.HasKey("Id");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("DistripackAPI.Models.ProductCategory", b =>
+                {
+                    b.Property<byte>("CategoryId");
+
+                    b.Property<int>("ProductId");
+
+                    b.HasKey("CategoryId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductCategory");
+                });
+
+            modelBuilder.Entity("DistripackAPI.Models.Sku", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Brand")
+                        .IsRequired()
                         .HasMaxLength(50);
+
+                    b.Property<string>("Capacity")
+                        .HasMaxLength(20);
 
                     b.Property<string>("Color")
-                        .HasMaxLength(50);
+                        .HasMaxLength(20);
 
-                    b.Property<string>("Descripcion")
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<DateTime?>("DeletedAt");
+
+                    b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(255);
-
-                    b.Property<DateTime>("FechaCreacion");
-
-                    b.Property<DateTime?>("FechaEliminado");
-
-                    b.Property<DateTime?>("FechaModificacion");
-
-                    b.Property<string>("Marca")
-                        .IsRequired()
-                        .HasMaxLength(50);
+                        .HasMaxLength(150);
 
                     b.Property<string>("Material")
                         .HasMaxLength(50);
 
-                    b.Property<string>("Medidas")
-                        .HasMaxLength(50);
+                    b.Property<string>("Measures")
+                        .HasMaxLength(20);
 
-                    b.Property<double>("Precio");
+                    b.Property<string>("Nick")
+                        .IsRequired()
+                        .HasMaxLength(100);
 
-                    b.HasKey("Id", "Sku");
+                    b.Property<double>("Price");
 
-                    b.ToTable("Productos");
+                    b.Property<int>("ProductId");
+
+                    b.Property<int>("Quantity");
+
+                    b.Property<DateTime?>("UpdatedAt");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Sku");
                 });
 
-            modelBuilder.Entity("DistripackAPI.Models.ProductoCategoria", b =>
+            modelBuilder.Entity("DistripackAPI.Models.Item", b =>
                 {
-                    b.Property<byte>("CategoriaId");
-
-                    b.Property<int>("ProductoId");
-
-                    b.Property<int>("ProductoSku");
-
-                    b.HasKey("CategoriaId", "ProductoId", "ProductoSku");
-
-                    b.HasIndex("ProductoId", "ProductoSku");
-
-                    b.ToTable("ProductoCategoria");
-                });
-
-            modelBuilder.Entity("DistripackAPI.Models.Detalle", b =>
-                {
-                    b.HasOne("DistripackAPI.Models.Pedido", "Pedido")
-                        .WithMany("Detalles")
-                        .HasForeignKey("PedidoId")
+                    b.HasOne("DistripackAPI.Models.Order", "Order")
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("DistripackAPI.Models.Producto", "Producto")
+                    b.HasOne("DistripackAPI.Models.Sku", "Sku")
                         .WithMany()
-                        .HasForeignKey("ProductoId", "ProductoSku")
+                        .HasForeignKey("SkuId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("DistripackAPI.Models.Pedido", b =>
+            modelBuilder.Entity("DistripackAPI.Models.Order", b =>
                 {
-                    b.HasOne("DistripackAPI.Models.Cliente", "Cliente")
+                    b.HasOne("DistripackAPI.Models.Client", "Client")
                         .WithMany()
-                        .HasForeignKey("ClienteId")
+                        .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("DistripackAPI.Models.ProductoCategoria", b =>
+            modelBuilder.Entity("DistripackAPI.Models.ProductCategory", b =>
                 {
-                    b.HasOne("DistripackAPI.Models.Categoria", "Categoria")
-                        .WithMany("ProductoCategorias")
-                        .HasForeignKey("CategoriaId")
+                    b.HasOne("DistripackAPI.Models.Category", "Category")
+                        .WithMany("ProductCategories")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("DistripackAPI.Models.Producto", "Producto")
-                        .WithMany("ProductoCategorias")
-                        .HasForeignKey("ProductoId", "ProductoSku")
+                    b.HasOne("DistripackAPI.Models.Product", "Product")
+                        .WithMany("ProductCategories")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("DistripackAPI.Models.Sku", b =>
+                {
+                    b.HasOne("DistripackAPI.Models.Product", "Product")
+                        .WithMany("Skus")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

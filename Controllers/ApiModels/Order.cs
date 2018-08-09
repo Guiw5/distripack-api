@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace DistripackAPI.Controllers.Resources
+namespace DistripackAPI.Controllers.ApiModels
 {
     public class Order
     {
@@ -24,7 +24,7 @@ namespace DistripackAPI.Controllers.Resources
         [Required]
         public double Subtotal { get; set; }
 
-        public EstadoPedido State { get; set; }
+        public OrderState State { get; set; }
 
         public DateTime CreationDate { get; set; }
 

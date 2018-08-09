@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace DistripackAPI.Controllers.Resources
+namespace DistripackAPI.Controllers.ApiModels
 {
     public class Client
     {

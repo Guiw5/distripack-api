@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using DistripackAPI.Controllers.Resources;
 using DistripackAPI.Models;
 using DistripackAPI.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Order = DistripackAPI.Models.Order;
 
 namespace DistripackAPI.Controllers
 {
@@ -22,19 +22,19 @@ namespace DistripackAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateOrderAsync([FromBody] Order order)
+        public async Task<IActionResult> CreateOrderAsync([FromBody] ApiModels.Order order)
         {
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var pedido = new Pedido
+            var pedido = new Order
             {
-                FechaCreacion = DateTime.Now,
-                Estado = EstadoPedido.Creado
+                CreatedAt = DateTime.Now,
+                State = OrderState.Created
             };
 
-            await context.Pedidos.AddAsync(pedido);
+            await context.Orders.AddAsync(pedido);
 
             return Ok(order);
         }
