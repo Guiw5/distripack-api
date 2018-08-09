@@ -15,15 +15,15 @@ namespace DistripackAPI.Models
 
         public int Id { get; set; }
 
-        public String Alias { get; set; }
+        public String Nick { get; set; }
 
-        public String Nombre { get; set; }
+        public String Name { get; set; }
 
         public ICollection<Sku> Skus { get; set; }
 
         public ICollection<ProductCategory> ProductCategories { get; set; }
 
-        public IReadOnlyCollection<Category> Categorias
+        public IReadOnlyCollection<Category> Categories
         {
             get { return this.ProductCategories.Select(x => x.Category).ToList(); }
         }

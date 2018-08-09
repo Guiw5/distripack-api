@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System.Linq;
 
 namespace DistripackAPI.Mapping
 {
@@ -6,23 +7,9 @@ namespace DistripackAPI.Mapping
     {
         public MappingProfile()
         {
-            //CreateMap<Product, Product>()
-            //    .ForMember(d => d.Nick, o => o.MapFrom(s => s.Nick))
-            //    .ForMember(d => d.CategoriesId,
-            //        o => o.MapFrom(s => s.Categorias.Select(c => c.Id).ToArray()))
-            //    .ForMember(d => d.Skus,
-            //    o => o.MapFrom(s => s.Skus.Select(c => c.Id).ToArray()));
-
-            //CreateMap<Models.Sku, Controllers.ApiModels.Sku>()
-            //    .ForMember(d => d.Id, o => o.MapFrom(s => s.Id))
-            //    .ForMember(d => d.Code, o => o.MapFrom(s => s.Code))
-            //    .ForMember(d => d.Nick, o => o.MapFrom(s => s.Nick))
-            //    .ForMember(d => d.Description, o => o.MapFrom(s => s.Description))
-            //    .ForMember(d => d.Price, o => o.MapFrom(s => s.Price))
-            //    .ForMember(d => d.Brand, o => o.MapFrom(s => s.Brand))
-            //    .ForMember(d => d.Quantity, o => o.MapFrom(s => s.Quantity))
-            //    .ForMember(d => d.Capacity, o => o.MapFrom(s => s.Capacity))
-            //    .ForMember(d => d.Measures, o => o.MapFrom(s => s.Measures));
+            CreateMap<Models.Product, Controllers.ApiModels.Product>()
+                .ForMember(d => d.CategoriesId,
+                    o => o.MapFrom(s => s.Categories.Select(c => c.Id).ToArray()));
 
 
             //CreateMap<Category, Category>()

@@ -3,7 +3,6 @@ using DistripackAPI.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DistripackAPI.Controllers
@@ -25,11 +24,9 @@ namespace DistripackAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProductsAsync()
         {
-            var productos = await context.Products
-                .GroupBy(x => x.Id)
-                .ToListAsync();
-
-            return Ok(productos);
+            var productos = await context.Products.Include(p => p.Skus).ToListAsync();
+            var products = mapper.Map<List<Models.Product>, List<ApiModels.Product>>(productos);
+            return Ok(products);
         }
 
         [HttpGet]
