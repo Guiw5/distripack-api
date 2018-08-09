@@ -65,6 +65,11 @@ namespace DistripackAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Clients");
+
+                    b.HasData(
+                        new { Id = 1, Mail = "lafonda@gmail.com", Name = "GuidoClient", Nick = "La Fonda" },
+                        new { Id = 2, Mail = "wagner.guido.5@gmail.com", Name = "BrunoClient", Nick = "La Casa" }
+                    );
                 });
 
             modelBuilder.Entity("DistripackAPI.Models.Item", b =>
@@ -119,11 +124,11 @@ namespace DistripackAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Alias")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100);
 
-                    b.Property<string>("Nombre")
+                    b.Property<string>("Nick")
                         .IsRequired()
                         .HasMaxLength(100);
 

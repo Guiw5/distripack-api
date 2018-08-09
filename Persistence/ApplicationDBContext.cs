@@ -43,9 +43,9 @@ namespace DistripackAPI.Persistence
 
             modelBuilder.Entity<Product>().ToTable("Products");
             modelBuilder.Entity<Product>().HasKey(p => p.Id);
-            modelBuilder.Entity<Product>().Property(p => p.Alias).HasMaxLength(100).IsRequired();
-            modelBuilder.Entity<Product>().Property(p => p.Nombre).HasMaxLength(100).IsRequired();
-            modelBuilder.Entity<Product>().Ignore(p => p.Categorias);
+            modelBuilder.Entity<Product>().Property(p => p.Nick).HasMaxLength(100).IsRequired();
+            modelBuilder.Entity<Product>().Property(p => p.Name).HasMaxLength(100).IsRequired();
+            modelBuilder.Entity<Product>().Ignore(p => p.Categories);
             modelBuilder.Entity<Product>()
                 .HasMany(p => p.Skus)
                 .WithOne(p => p.Product);
