@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
-using DistripackAPI.Controllers.Resources;
-using DistripackAPI.Models;
 using DistripackAPI.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DistripackAPI.Controllers
@@ -24,23 +23,24 @@ namespace DistripackAPI.Controllers
 
         //[Authorize]
         [HttpGet]
-        public async Task<IEnumerable<Product>> GetProductsAsync()
+        public async Task<IActionResult> GetProductsAsync()
         {
-            var products = await context.Productos
-                .Include(p => p.ProductoCategorias)
-                .ThenInclude(c => c.Categoria)
+            var productos = await context.Products
+                .GroupBy(x => x.Id)
                 .ToListAsync();
-            return mapper.Map<List<Producto>, List<Product>>(products);
+
+            return Ok(productos);
         }
 
-        [HttpGet("api/categories")]
-        public async Task<IEnumerable<Category>> GetCategoriesAsync()
+        [HttpGet]
+        [Route("api/categories")]
+        public async Task<IEnumerable<ApiModels.Category>> GetCategoriesAsync()
         {
-            var categories = await context.Categorias
-                .Include(p => p.ProductoCategorias)
-                .ThenInclude(c => c.Producto)
+            var categories = await context.Categories
+                .Include(p => p.ProductCategories)
+                .ThenInclude(c => c.Product)
                 .ToListAsync();
-            return mapper.Map<List<Categoria>, List<Category>>(categories);
+            return mapper.Map<List<Models.Category>, List<ApiModels.Category>>(categories);
         }
     }
 }

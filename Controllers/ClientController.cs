@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using DistripackAPI.Controllers.Resources;
-using DistripackAPI.Models;
 using DistripackAPI.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +22,8 @@ namespace DistripackAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetClientsAsync()
         {
-            var clientes = await context.Clientes.ToListAsync();
-            var clients = mapper.Map<Cliente, Client>(null);
+            var clientes = await context.Clients.ToListAsync();
+            var clients = mapper.Map<Models.Client, ApiModels.Client>(null);
             return Ok(clients);
         }
 
@@ -34,14 +32,14 @@ namespace DistripackAPI.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var cliente = await context.Clientes.AddAsync(new Cliente());
+            var cliente = await context.Clients.AddAsync(new Models.Client());
 
             var rta = await context.SaveChangesAsync();
             return Ok(cliente);
 
         }
 
-        // PUT: api/Cliente/5
+        // PUT: api/Client/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
