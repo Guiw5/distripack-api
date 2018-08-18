@@ -4,6 +4,10 @@ namespace DistripackAPI.Models
 {
     public class Item
     {
+        public Item()
+        {
+            Discount = 0;
+        }
 
         public int Id { get; set; }
 

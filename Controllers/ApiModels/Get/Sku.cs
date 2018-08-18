@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DistripackAPI.Controllers.ApiModels
+namespace DistripackAPI.Controllers.ApiModels.Get
 {
     public class Sku
     {

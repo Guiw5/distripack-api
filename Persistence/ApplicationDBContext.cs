@@ -8,11 +8,11 @@ namespace DistripackAPI.Persistence
     {
         public DbSet<Product> Products { get; set; }
 
-        public DbSet<Order> Orders { get; set; }
-
         public DbSet<Client> Clients { get; set; }
 
         public DbSet<Category> Categories { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
 
         public DbSet<Item> Items { get; set; }
 
@@ -35,6 +35,8 @@ namespace DistripackAPI.Persistence
             modelBuilder.Entity<Sku>().Property(p => p.Measures).HasMaxLength(20);
             modelBuilder.Entity<Sku>().Property(p => p.Capacity).HasMaxLength(20);
             modelBuilder.Entity<Sku>().Property(p => p.Price).IsRequired();
+            modelBuilder.Entity<Sku>().Property(p => p.CreatedAt).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Sku>().Property(p => p.UpdatedAt).ValueGeneratedOnUpdate();
             modelBuilder.Entity<Sku>()
                 .HasOne(p => p.Product)
                 .WithMany(p => p.Skus)
@@ -73,30 +75,31 @@ namespace DistripackAPI.Persistence
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Order>().ToTable("Orders");
-            modelBuilder.Entity<Order>()
-                .HasMany(p => p.Items)
-                .WithOne(p => p.Order)
-                .OnDelete(DeleteBehavior.Cascade);
-
+            modelBuilder.Entity<Order>().HasKey(o => o.Id);
             modelBuilder.Entity<Order>().HasOne(p => p.Client).WithMany();
             modelBuilder.Entity<Order>().Property(p => p.State).IsRequired();
             modelBuilder.Entity<Order>().Property(p => p.ClientId).IsRequired();
             modelBuilder.Entity<Order>().Property(p => p.CreatedAt).IsRequired();
-
-            modelBuilder.Entity<Item>().ToTable("Items");
-            modelBuilder.Entity<Item>().HasKey(c => new { c.OrderId, c.Id });
-            modelBuilder.Entity<Item>()
-                .HasOne(p => p.Order)
-                .WithMany(p => p.Items)
-                .HasForeignKey(p => p.OrderId)
+            modelBuilder.Entity<Order>()
+                .HasMany(p => p.Items)
+                .WithOne(p => p.Order)
+                .HasForeignKey(i => i.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<Item>().ToTable("Items");
+            modelBuilder.Entity<Item>().HasKey(c => c.Id);
             modelBuilder.Entity<Item>().HasOne(p => p.Sku);
             modelBuilder.Entity<Item>().Property(p => p.Quantity).IsRequired();
             modelBuilder.Entity<Item>().Property(p => p.UnitPrice).IsRequired();
             modelBuilder.Entity<Item>().Property(p => p.SkuId).IsRequired();
+            modelBuilder.Entity<Item>()
+               .HasOne(p => p.Order)
+               .WithMany(p => p.Items)
+               .HasForeignKey(p => p.OrderId)
+               .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Client>().ToTable("Clients");
+            modelBuilder.Entity<Client>().HasKey(c => c.Id);
             modelBuilder.Entity<Client>().Property(p => p.Nick).IsRequired();
             modelBuilder.Entity<Client>().Property(p => p.Mail).IsRequired();
 
