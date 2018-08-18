@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace DistripackAPI.Controllers.ApiModels
+namespace DistripackAPI.Controllers.ApiModels.Get
 {
     public class Category
     {

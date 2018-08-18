@@ -2,20 +2,10 @@
 
 namespace DistripackAPI.Migrations
 {
-    public partial class translatingProductEntity : Migration
+    public partial class AddingClients : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "Nombre",
-                table: "Products",
-                newName: "Nick");
-
-            migrationBuilder.RenameColumn(
-                name: "Alias",
-                table: "Products",
-                newName: "Name");
-
             migrationBuilder.InsertData(
                 table: "Clients",
                 columns: new[] { "Id", "Address", "BusinessName", "CelPhone", "Cuit", "Location", "Mail", "Name", "Nick", "Phone", "PostalCode" },
@@ -38,16 +28,6 @@ namespace DistripackAPI.Migrations
                 table: "Clients",
                 keyColumn: "Id",
                 keyValue: 2);
-
-            migrationBuilder.RenameColumn(
-                name: "Nick",
-                table: "Products",
-                newName: "Nombre");
-
-            migrationBuilder.RenameColumn(
-                name: "Name",
-                table: "Products",
-                newName: "Alias");
         }
     }
 }

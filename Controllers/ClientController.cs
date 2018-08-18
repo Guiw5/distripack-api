@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using DistripackAPI.Persistence;
+using DistripackAPI.Persistence.Repository;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using GetModel = DistripackAPI.Controllers.ApiModels.Get;
+using PostModel = DistripackAPI.Controllers.ApiModels.Post;
 
 namespace DistripackAPI.Controllers
 {
@@ -10,32 +13,35 @@ namespace DistripackAPI.Controllers
     [ApiController]
     public class ClientController : ControllerBase
     {
-        private readonly ApplicationDbContext context;
+        private readonly IClientRepository repository;
         private readonly IMapper mapper;
+        private readonly IUnitOfWork unitOfWork;
 
-        public ClientController(ApplicationDbContext context, IMapper mapper)
+        public ClientController(IClientRepository repository, IMapper mapper, IUnitOfWork unitOfWork)
         {
             this.mapper = mapper;
-            this.context = context;
+            this.unitOfWork = unitOfWork;
+            this.repository = repository;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetClientsAsync()
+        public async Task<IActionResult> GetClients()
         {
-            var clientes = await context.Clients.ToListAsync();
-            var clients = mapper.Map<Models.Client, ApiModels.Client>(null);
+            var clientes = await repository.GetAll();
+            var clients = mapper.Map<IList<GetModel.Client>>(clientes);
             return Ok(clients);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateClient([FromBody] string value)
+        public async Task<IActionResult> CreateClient([FromBody] PostModel.Client apiClient)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var cliente = await context.Clients.AddAsync(new Models.Client());
 
-            var rta = await context.SaveChangesAsync();
-            return Ok(cliente);
+            var client = mapper.Map<Models.Client>(apiClient);
+            await repository.Add(client);
+            await unitOfWork.Complete();
+            return Ok(client);
 
         }
 

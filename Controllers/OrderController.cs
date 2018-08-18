@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using DistripackAPI.Models;
 using DistripackAPI.Persistence;
+using DistripackAPI.Persistence.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using Order = DistripackAPI.Models.Order;
 
 namespace DistripackAPI.Controllers
 {
@@ -12,31 +12,37 @@ namespace DistripackAPI.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
-        private readonly ApplicationDbContext context;
+        private readonly IOrderRepository repository;
         private readonly IMapper mapper;
+        private readonly IUnitOfWork unitOfWork;
 
-        public OrderController(ApplicationDbContext context, IMapper mapper)
+        public OrderController(IOrderRepository repository, IMapper mapper, IUnitOfWork unitOfWork)
         {
             this.mapper = mapper;
-            this.context = context;
+            this.unitOfWork = unitOfWork;
+            this.repository = repository;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateOrderAsync([FromBody] ApiModels.Order order)
+        public async Task<IActionResult> CreateOrder([FromBody] ApiModels.Post.Order apiOrder)
         {
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var pedido = new Order
+            try
             {
-                CreatedAt = DateTime.Now,
-                State = OrderState.Created
-            };
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
 
-            await context.Orders.AddAsync(pedido);
 
-            return Ok(order);
+                var order = mapper.Map<Order>(apiOrder);
+
+                order.State = OrderState.Created;
+                await repository.Add(order); 
+                await unitOfWork.Complete();
+                return Ok(order);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
     }
 }

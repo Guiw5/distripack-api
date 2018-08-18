@@ -12,7 +12,8 @@ namespace DistripackAPI.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<byte>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     IsCommercialType = table.Column<bool>(nullable: false)
                 },
@@ -49,8 +50,8 @@ namespace DistripackAPI.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Alias = table.Column<string>(maxLength: 100, nullable: false),
-                    Nombre = table.Column<string>(maxLength: 100, nullable: false)
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
+                    Nick = table.Column<string>(maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -85,7 +86,7 @@ namespace DistripackAPI.Migrations
                 name: "ProductCategory",
                 columns: table => new
                 {
-                    CategoryId = table.Column<byte>(nullable: false),
+                    CategoryId = table.Column<int>(nullable: false),
                     ProductId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -140,7 +141,8 @@ namespace DistripackAPI.Migrations
                 name: "Items",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     OrderId = table.Column<int>(nullable: false),
                     SkuId = table.Column<int>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
@@ -149,7 +151,7 @@ namespace DistripackAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Items", x => new { x.OrderId, x.Id });
+                    table.PrimaryKey("PK_Items", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Items_Orders_OrderId",
                         column: x => x.OrderId,
@@ -163,6 +165,11 @@ namespace DistripackAPI.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Items_OrderId",
+                table: "Items",
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Items_SkuId",

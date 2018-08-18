@@ -21,7 +21,9 @@ namespace DistripackAPI.Migrations
 
             modelBuilder.Entity("DistripackAPI.Models.Category", b =>
                 {
-                    b.Property<byte>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("IsCommercialType");
 
@@ -74,11 +76,13 @@ namespace DistripackAPI.Migrations
 
             modelBuilder.Entity("DistripackAPI.Models.Item", b =>
                 {
-                    b.Property<int>("OrderId");
-
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<double>("Discount");
+
+                    b.Property<int>("OrderId");
 
                     b.Property<int>("Quantity");
 
@@ -86,7 +90,9 @@ namespace DistripackAPI.Migrations
 
                     b.Property<double>("UnitPrice");
 
-                    b.HasKey("OrderId", "Id");
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("SkuId");
 
@@ -139,7 +145,7 @@ namespace DistripackAPI.Migrations
 
             modelBuilder.Entity("DistripackAPI.Models.ProductCategory", b =>
                 {
-                    b.Property<byte>("CategoryId");
+                    b.Property<int>("CategoryId");
 
                     b.Property<int>("ProductId");
 
@@ -166,7 +172,8 @@ namespace DistripackAPI.Migrations
                     b.Property<string>("Color")
                         .HasMaxLength(20);
 
-                    b.Property<DateTime>("CreatedAt");
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<DateTime?>("DeletedAt");
 
@@ -190,7 +197,8 @@ namespace DistripackAPI.Migrations
 
                     b.Property<int>("Quantity");
 
-                    b.Property<DateTime?>("UpdatedAt");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .ValueGeneratedOnUpdate();
 
                     b.HasKey("Id");
 
