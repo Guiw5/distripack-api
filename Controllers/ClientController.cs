@@ -2,6 +2,7 @@
 using DistripackAPI.Persistence;
 using DistripackAPI.Persistence.Repository;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GetModel = DistripackAPI.Controllers.ApiModels.Get;
@@ -35,13 +36,21 @@ namespace DistripackAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateClient([FromBody] PostModel.Client apiClient)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
 
-            var client = mapper.Map<Models.Client>(apiClient);
-            await repository.Add(client);
-            await unitOfWork.Complete();
-            return Ok(client);
+                var client = mapper.Map<Models.Client>(apiClient);
+                var clientEntry = await repository.Add(client);
+                await unitOfWork.Complete();
+                var getClient = mapper.Map<GetModel.Client>(clientEntry.Entity);
+                return Ok(getClient);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
 
         }
 

@@ -18,14 +18,16 @@ namespace DistripackAPI.Controllers.Mapping
             CreateMap<Item, GetModel.Item>()
                 .ForMember(d => d.Price, o => o.MapFrom(s => s.UnitPrice));
 
-            CreateMap<PostModel.Order, Order>()
-                .ForMember(d => d.Items,
-                    opt => opt.MapFrom(
-                        s => s.Items
-                            .Select(i => new Item { SkuId = i.SkuId, Quantity = i.Quantity, UnitPrice = i.Price })));
             CreateMap<PostModel.Item, Item>()
-                   .ForMember(d => d.UnitPrice, o => o.MapFrom(s => s.Price));
-            //CreateMap<Client, GetModel.Client>();
+                .ForMember(d => d.UnitPrice, o => o.MapFrom(s => s.Price));
+
+            CreateMap<Item, PostModel.Item>()
+                .ForMember(d => d.SkuNick, opt => opt.MapFrom(s => s.Sku.Nick))
+                .ForMember(d => d.Price, o => o.MapFrom(s => s.UnitPrice));
+
+            CreateMap<PostModel.Order, Order>();
+            CreateMap<PostModel.Client, Client>();
+            CreateMap<Client, GetModel.Client>();
         }
     }
 }

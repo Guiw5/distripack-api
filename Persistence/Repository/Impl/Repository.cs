@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,9 +32,9 @@ namespace DistripackAPI.Persistence.Repository.Impl
             return await Context.Set<T>().Where(expression).ToListAsync();
         }
 
-        public virtual async Task Add(T entity)
+        public virtual async Task<EntityEntry<T>> Add(T entity)
         {
-            await Context.Set<T>().AddAsync(entity);
+            return await Context.Set<T>().AddAsync(entity);
         }
 
         public virtual void Delete(T entity)

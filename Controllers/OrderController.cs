@@ -35,9 +35,10 @@ namespace DistripackAPI.Controllers
                 var order = mapper.Map<Order>(apiOrder);
 
                 order.State = OrderState.Created;
-                await repository.Add(order); 
+                var orderEntry = await repository.Add(order);
                 await unitOfWork.Complete();
-                return Ok(order);
+                apiOrder = mapper.Map<ApiModels.Post.Order>(orderEntry.Entity);
+                return Ok(apiOrder);
             }
             catch (Exception ex)
             {
