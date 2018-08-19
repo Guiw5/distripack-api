@@ -5,8 +5,6 @@ namespace DistripackAPI.Controllers.ApiModels.Post
 {
     public class Client
     {
-        public String Name { get; set; }
-
         [Required]
         public String Nick { get; set; }
 

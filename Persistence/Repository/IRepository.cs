@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace DistripackAPI.Persistence.Repository
 
         Task<ICollection<T>> Find(Expression<Func<T, bool>> expression);
 
-        Task Add(T entity);
+        Task<EntityEntry<T>> Add(T entity);
 
         void Delete(T entity);
     }
