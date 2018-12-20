@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-using DistripackAPI.Controllers.ApiModels.Get;
-using DistripackAPI.Persistence.Repository;
+using DistripackAPI.Controllers.ApiModels;
+using DistripackAPI.Persistence;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,22 +12,29 @@ namespace DistripackAPI.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly IProductRepository repository;
+        private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
 
-        public ProductController(IProductRepository repository, IMapper mapper)
+        public ProductController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             this.mapper = mapper;
-            this.repository = repository;
+            this.unitOfWork = unitOfWork;
         }
 
         //[Authorize]
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
-            var productos = await repository.GetAll();
-            var products = mapper.Map<List<Product>>(productos);
-            return Ok(products);
+            try
+            {
+                var productos = await unitOfWork.Products.GetAll();
+                var products = mapper.Map<IList<Product>>(productos);
+                return Ok(products);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
     }
 }

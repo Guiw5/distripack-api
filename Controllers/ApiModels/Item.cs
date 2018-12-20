@@ -1,23 +1,21 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DistripackAPI.Controllers.ApiModels.Get
+namespace DistripackAPI.Controllers.ApiModels
 {
-    public class Item
+    public class Item : ApiModel
     {
         public int Id { get; set; }
 
-        public int OrderId { get; set; }
-
         [Required]
         public int SkuId { get; set; }
+
+        public string SkuNick { get; set; }
 
         [Required]
         public int Quantity { get; set; }
 
         [Required]
         public double Price { get; set; }
-
-        public double Discount { get; set; }
 
     }
 }

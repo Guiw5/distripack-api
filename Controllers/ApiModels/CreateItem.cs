@@ -1,13 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DistripackAPI.Controllers.ApiModels.Post
+namespace DistripackAPI.Controllers.ApiModels
 {
-    public class Item
+    public class CreateItem : ApiModel
     {
         [Required]
         public int SkuId { get; set; }
-
-        public string SkuNick { get; set; }
 
         [Required]
         public int Quantity { get; set; }

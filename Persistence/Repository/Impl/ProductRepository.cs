@@ -11,18 +11,16 @@ namespace DistripackAPI.Persistence.Repository.Impl
 
         public async Task<Product> GetWithSkus(int id)
         {
-            return await DbContext.Products
+            return await Context.Products
                 .Include(p => p.Skus)
                 .SingleOrDefaultAsync(p => p.Id == id);
         }
 
-        public override async Task<ICollection<Product>> GetAll()
+        public async Task<ICollection<Product>> GetAll()
         {
-            return await DbContext.Products
+            return await Context.Products
                 .Include(p => p.Skus)
                 .ToListAsync();
         }
-
-        public ApplicationDbContext DbContext => Context as ApplicationDbContext;
     }
 }

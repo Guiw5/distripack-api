@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace DistripackAPI.Controllers.ApiModels.Post
+namespace DistripackAPI.Controllers.ApiModels
 {
-    public class Client
+    public class CreateClient : ApiModel
     {
         [Required]
         public String Nick { get; set; }

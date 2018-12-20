@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace DistripackAPI.Controllers.ApiModels.Get
+namespace DistripackAPI.Controllers.ApiModels
 {
-    public class Client
+    public class Client : ApiModel
     {
         public int Id { get; set; }
 

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DistripackAPI.Controllers.ApiModels.Get;
+using DistripackAPI.Controllers.ApiModels;
 using DistripackAPI.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

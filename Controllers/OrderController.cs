@@ -1,9 +1,9 @@
-﻿using AutoMapper;
-using DistripackAPI.Models;
-using DistripackAPI.Persistence;
-using DistripackAPI.Persistence.Repository;
+﻿using DistripackAPI.Controllers.ApiModels;
+using DistripackAPI.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DistripackAPI.Controllers
@@ -12,33 +12,91 @@ namespace DistripackAPI.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
-        private readonly IOrderRepository repository;
-        private readonly IMapper mapper;
-        private readonly IUnitOfWork unitOfWork;
 
-        public OrderController(IOrderRepository repository, IMapper mapper, IUnitOfWork unitOfWork)
+        private readonly IOrderService orderService;
+
+        public OrderController(IOrderService orderService)
         {
-            this.mapper = mapper;
-            this.unitOfWork = unitOfWork;
-            this.repository = repository;
+            this.orderService = orderService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateOrder([FromBody] ApiModels.Post.Order apiOrder)
+        public async Task<IActionResult> CreateOrder([FromBody] CreateOrder apiOrder)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
+                var order = await orderService.Create(apiOrder);
 
-                var order = mapper.Map<Order>(apiOrder);
+                return Ok(order);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
 
-                order.State = OrderState.Created;
-                var orderEntry = await repository.Add(order);
-                await unitOfWork.Complete();
-                apiOrder = mapper.Map<ApiModels.Post.Order>(orderEntry.Entity);
-                return Ok(apiOrder);
+            }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateOrder([FromBody] UpdateOrder apiOrder)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var order = await orderService.Update(apiOrder);
+                return Ok(order);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+
+            }
+        }
+
+        [HttpPut]
+        [Route("print")]
+        public async Task<IActionResult> Print([FromQuery] int[] orderIds)
+        {
+            try
+            {
+                var orders = new List<int>(orderIds);
+                await orderService.PrintAsync(orders);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+
+            }
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetOrders()
+        {
+            try
+            {
+                var apiOrders = await orderService.GetAllCreated();
+                return Ok(apiOrders);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [Route("history")]
+        [HttpGet]
+        public async Task<IActionResult> GetHistory()
+        {
+            try
+            {
+                var apiOrders = await orderService.GetAllPendings();
+                return Ok(apiOrders);
             }
             catch (Exception ex)
             {
