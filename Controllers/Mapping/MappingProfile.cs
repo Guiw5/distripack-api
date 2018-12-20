@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
-using DistripackAPI.Models;
 using System.Linq;
-using GetModel = DistripackAPI.Controllers.ApiModels.Get;
-using PostModel = DistripackAPI.Controllers.ApiModels.Post;
+using Client = DistripackAPI.Models.Client;
+using Item = DistripackAPI.Models.Item;
+using Order = DistripackAPI.Models.Order;
+using Product = DistripackAPI.Models.Product;
 
 namespace DistripackAPI.Controllers.Mapping
 {
@@ -10,24 +11,20 @@ namespace DistripackAPI.Controllers.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<Product, GetModel.Product>()
+            //<Source, Destiny>
+            CreateMap<Product, ApiModels.Product>()
                 .ForMember(d => d.CategoriesId,
                     o => o.MapFrom(s => s.Categories.Select(c => c.Id).ToArray()));
 
+            CreateMap<Item, ApiModels.Item>()
+             .ForMember(d => d.SkuNick, opt => opt.MapFrom(s => s.Sku.Nick))
+             .ForMember(d => d.Price, opt => opt.MapFrom(s => s.UnitPrice));
 
-            CreateMap<Item, GetModel.Item>()
-                .ForMember(d => d.Price, o => o.MapFrom(s => s.UnitPrice));
+            CreateMap<Order, ApiModels.Order>()
+                .ForMember(d => d.State, opt => opt.MapFrom(s => s.State.ToString()));
 
-            CreateMap<PostModel.Item, Item>()
-                .ForMember(d => d.UnitPrice, o => o.MapFrom(s => s.Price));
+            CreateMap<Client, ApiModels.Client>();
 
-            CreateMap<Item, PostModel.Item>()
-                .ForMember(d => d.SkuNick, opt => opt.MapFrom(s => s.Sku.Nick))
-                .ForMember(d => d.Price, o => o.MapFrom(s => s.UnitPrice));
-
-            CreateMap<PostModel.Order, Order>();
-            CreateMap<PostModel.Client, Client>();
-            CreateMap<Client, GetModel.Client>();
         }
     }
 }

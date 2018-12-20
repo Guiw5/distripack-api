@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
-namespace DistripackAPI.Controllers.ApiModels.Post
+namespace DistripackAPI.Controllers.ApiModels
 {
-    public class Order
+    public class Order : ApiModel
     {
-        [Required]
+        public int Id { get; set; }
+
         public int ClientId { get; set; }
 
-        [Required]
         public ICollection<Item> Items { get; set; }
+
+        public String State { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
         public DateTime? DeliveryDate { get; set; }
+
+        public DateTime? DeliveredAt { get; set; }
     }
 }

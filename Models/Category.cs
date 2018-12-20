@@ -5,14 +5,12 @@ using System.Linq;
 
 namespace DistripackAPI.Models
 {
-    public class Category
+    public class Category : Entity
     {
         public Category()
         {
             ProductCategories = new Collection<ProductCategory>();
         }
-
-        public int Id { get; set; }
 
         public String Name { get; set; }
 

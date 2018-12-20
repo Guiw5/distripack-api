@@ -2,10 +2,8 @@ using System;
 
 namespace DistripackAPI.Models
 {
-    public class Client
+    public class Client : Entity
     {
-        public int Id { get; set; }
-
         //public ApplicationUser User { get; set; }
 
         // public String UserId { get; set; }

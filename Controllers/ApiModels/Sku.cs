@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace DistripackAPI.Controllers.ApiModels.Get
+namespace DistripackAPI.Controllers.ApiModels
 {
-    public class Sku
+    public class Sku : ApiModel
     {
         public Sku()
         {

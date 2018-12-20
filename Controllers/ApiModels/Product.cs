@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace DistripackAPI.Controllers.ApiModels.Get
+namespace DistripackAPI.Controllers.ApiModels
 {
-    public class Product
+    public class Product : ApiModel
     {
         public Product()
         {

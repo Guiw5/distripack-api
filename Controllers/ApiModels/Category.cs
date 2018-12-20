@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace DistripackAPI.Controllers.ApiModels.Get
+namespace DistripackAPI.Controllers.ApiModels
 {
-    public class Category
+    public class Category : ApiModel
     {
         public Category() => Products = new Collection<Product>();
 
