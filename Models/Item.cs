@@ -8,15 +8,14 @@ namespace DistripackAPI.Models
 
 
         public Item(Order order, CreateItem i)
-            : this(order, i.SkuId, i.Price, i.Quantity, 0)
+            : this(order.Id, i.SkuId, i.Price, i.Quantity, 0)
         {
 
         }
 
-        public Item(Order order, int skuId, Double price, int quantity, Double discount)
+        public Item(int orderId, int skuId, Double price, int quantity, Double discount)
         {
-            Order = order;
-            OrderId = order.Id;
+            OrderId = orderId;
             SkuId = skuId;
             UnitPrice = price;
             Quantity = quantity;
