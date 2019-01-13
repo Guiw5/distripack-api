@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DistripackAPI.Controllers.ApiModels;
 using System.Linq;
 using Client = DistripackAPI.Models.Client;
 using Item = DistripackAPI.Models.Item;
@@ -24,7 +25,11 @@ namespace DistripackAPI.Controllers.Mapping
                 .ForMember(d => d.State, opt => opt.MapFrom(s => s.State.ToString()));
 
             CreateMap<Client, ApiModels.Client>();
+            CreateMap<Client, ApiModels.FullClient>();
 
+            CreateMap<CreateClient, Client>();
+            CreateMap<UpdateClient, Client>()
+                .ForMember(d => d.Mail, opt => opt.MapFrom(s => s.Email));
         }
     }
 }

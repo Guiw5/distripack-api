@@ -81,23 +81,23 @@ namespace DistripackAPI.Persistence.Repository
         /// <returns></returns>
         EntityEntry<T> Add(T entity);
 
-        ///// <summary>
-        ///// Update entity to repository
-        ///// </summary>
-        ///// <param name="itemDb"></param>
-        ///// <returns></returns>
-        //void Update(T entity);
+        /// <summary>
+        /// Update entity to repository
+        /// </summary>
+        /// <param name="itemDb"></param>
+        /// <returns></returns>
+        void Update(T entity);
 
-        ///// <summary>
-        /////  Delete entity by Id
-        ///// </summary>
-        ///// <param name="entity"></param>
-        //void Delete(int id);
+        /// <summary>
+        ///  Delete entity by Id
+        /// </summary>
+        /// <param name="entity"></param>
+        void Delete(int id);
 
-        ///// <summary>
-        /////  Delete entity from repository
-        ///// </summary>
-        ///// <param name="entity"></param>
-        //void Delete(T entity);
+        /// <summary>
+        ///  Delete entity from repository
+        /// </summary>
+        /// <param name="entity"></param>
+        void Delete(T entity);
     }
 }

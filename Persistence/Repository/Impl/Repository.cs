@@ -100,26 +100,26 @@ namespace DistripackAPI.Persistence.Repository.Impl
             return Context.Set<T>().Add(entity);
         }
 
-        //public virtual void Update(T entity)
-        //{
-        //    Context.Set<T>().Update(entity);
-        //}
+        public virtual void Update(T entity)
+        {
+            Context.Set<T>().Update(entity);
+        }
 
-        //public virtual void Delete(int id)
-        //{
-        //    T entity = Context.Set<T>().Find(id);
-        //    Delete(entity);
-        //}
+        public virtual void Delete(int id)
+        {
+            T entity = Context.Set<T>().Find(id);
+            Delete(entity);
+        }
 
-        //public virtual void Delete(T entity)
-        //{
-        //    var dbSet = Context.Set<T>();
-        //    if (Context.Entry(entity).State == EntityState.Detached)
-        //    {
-        //        dbSet.Attach(entity);
-        //    }
-        //    dbSet.Remove(entity);
-        //}
+        public virtual void Delete(T entity)
+        {
+            var dbSet = Context.Set<T>();
+            if (Context.Entry(entity).State == EntityState.Detached)
+            {
+                dbSet.Attach(entity);
+            }
+            dbSet.Remove(entity);
+        }
     }
 
 }

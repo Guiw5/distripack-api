@@ -15,7 +15,7 @@ namespace DistripackAPI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.1-rtm-30846")
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -42,36 +42,48 @@ namespace DistripackAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Address");
+                    b.Property<string>("Address")
+                        .HasMaxLength(100);
 
-                    b.Property<string>("BusinessName");
+                    b.Property<string>("BusinessName")
+                        .HasMaxLength(100);
 
-                    b.Property<string>("CelPhone");
+                    b.Property<string>("CelPhone")
+                        .HasMaxLength(15);
 
-                    b.Property<string>("Cuit");
+                    b.Property<string>("Cuit")
+                        .HasMaxLength(13);
 
-                    b.Property<string>("Location");
+                    b.Property<string>("Dni")
+                        .HasMaxLength(11);
+
+                    b.Property<string>("FantasyName")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Location")
+                        .HasMaxLength(50);
 
                     b.Property<string>("Mail")
                         .IsRequired();
 
-                    b.Property<string>("Name");
-
                     b.Property<string>("Nick")
                         .IsRequired();
 
-                    b.Property<string>("Phone");
+                    b.Property<string>("Phone")
+                        .HasMaxLength(10);
 
-                    b.Property<string>("PostalCode");
+                    b.Property<string>("PostalCode")
+                        .HasMaxLength(8);
 
                     b.HasKey("Id");
 
                     b.ToTable("Clients");
-
-                    b.HasData(
-                        new { Id = 1, Mail = "lafonda@gmail.com", Name = "GuidoClient", Nick = "La Fonda" },
-                        new { Id = 2, Mail = "wagner.guido.5@gmail.com", Name = "BrunoClient", Nick = "La Casa" }
-                    );
                 });
 
             modelBuilder.Entity("DistripackAPI.Models.Item", b =>

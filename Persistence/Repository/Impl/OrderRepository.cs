@@ -34,10 +34,19 @@ namespace DistripackAPI.Persistence.Repository.Impl
 
         public async Task<ICollection<Order>> GetAllPendings()
         {
-            return await Context.Orders.Where(o => OrderState.Created < o.State)
+            return await Context.Orders.Where(o => OrderState.Created < o.State && OrderState.Delivered > o.State)
                 .Include(o => o.Items)
                 .ThenInclude(i => i.Sku)
                 .OrderBy(o => o.DeliveryDate)
+                .ToListAsync();
+        }
+
+        public async Task<ICollection<Order>> GetAllDelivered()
+        {
+            return await Context.Orders.Where(o => OrderState.Delivered.Equals(o.State))
+                .Include(o => o.Items)
+                .ThenInclude(i => i.Sku)
+                .OrderByDescending(o => o.DeliveryDate)
                 .ToListAsync();
         }
 

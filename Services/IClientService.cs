@@ -9,5 +9,9 @@ namespace DistripackAPI.Services
         Task<Client> Create(CreateClient apiClient);
 
         Task<ICollection<Client>> GetAll();
+
+        Task<ICollection<FullClient>> GetAllFull();
+
+        Task Modify(UpdateClient apiClient);
     }
 }

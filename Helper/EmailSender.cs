@@ -21,7 +21,7 @@ namespace DistripackAPI.Helper
                 "<br /><br />  Qué tal? Necesitamos que nos des una mano!!! " +
                 "<br />brindándonos algunos datos para poder mejorar nuestros servicios" +
                 "<br /> <br />Por favor, completa el siguiente formulario haciendo click en el link <br /> " +
-                $"<a href=\"{EmailSettings.Link}\">goo.gl/clientes</a>";
+                $"<a href=\"{EmailSettings.Link}?email={to}\">goo.gl/clientes</a>";
 
             this.SendEmail(to, name, subject, body);
         }
