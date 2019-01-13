@@ -31,6 +31,21 @@ namespace DistripackAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("full")]
+        public async Task<IActionResult> GetFullClients()
+        {
+            try
+            {
+                var clients = await clientService.GetAllFull();
+                return Ok(clients);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateClient([FromBody] CreateClient apiClient)
         {
@@ -41,6 +56,24 @@ namespace DistripackAPI.Controllers
 
                 var client = await clientService.Create(apiClient);
                 return Ok(client);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> ModifyClient([FromBody] UpdateClient apiClient)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                await clientService.Modify(apiClient);
+                return Ok();
             }
             catch (Exception ex)
             {

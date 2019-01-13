@@ -9,12 +9,18 @@ namespace DistripackAPI.Services
     {
         Task<Order> Create(CreateOrder apiOrder);
 
-        Task<Order> Update(UpdateOrder order);
+        Task<Order> Modify(UpdateOrder order);
 
-        Task PrintAsync(List<int> orders);
+        Task Print(List<int> orders);
+
+        Task Deliver(List<int> orders);
+
+        Task Delete(List<int> orders);
 
         Task<ICollection<Order>> GetAllCreated();
 
         Task<ICollection<Order>> GetAllPendings();
+
+        Task<ICollection<Order>> GetAllDelivered();
     }
 }

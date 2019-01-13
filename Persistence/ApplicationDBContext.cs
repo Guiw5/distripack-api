@@ -100,14 +100,20 @@ namespace DistripackAPI.Persistence
 
             modelBuilder.Entity<Client>().ToTable("Clients");
             modelBuilder.Entity<Client>().HasKey(c => c.Id);
-            modelBuilder.Entity<Client>().Property(p => p.Nick).IsRequired();
-            modelBuilder.Entity<Client>().Property(p => p.Mail).IsRequired();
+            modelBuilder.Entity<Client>().Property(c => c.Nick).IsRequired();
+            modelBuilder.Entity<Client>().Property(c => c.Mail).IsRequired();
+            modelBuilder.Entity<Client>().Property(c => c.FirstName).HasMaxLength(50);
+            modelBuilder.Entity<Client>().Property(c => c.LastName).HasMaxLength(50);
+            modelBuilder.Entity<Client>().Property(c => c.CelPhone).HasMaxLength(15);
+            modelBuilder.Entity<Client>().Property(c => c.BusinessName).HasMaxLength(100);
+            modelBuilder.Entity<Client>().Property(c => c.FantasyName).HasMaxLength(100);
+            modelBuilder.Entity<Client>().Property(c => c.Cuit).HasMaxLength(13);
+            modelBuilder.Entity<Client>().Property(c => c.Dni).HasMaxLength(11);
+            modelBuilder.Entity<Client>().Property(c => c.Location).HasMaxLength(50);
+            modelBuilder.Entity<Client>().Property(c => c.Address).HasMaxLength(100);
+            modelBuilder.Entity<Client>().Property(c => c.PostalCode).HasMaxLength(8);
+            modelBuilder.Entity<Client>().Property(c => c.Phone).HasMaxLength(10);
 
-
-            modelBuilder.Entity<Client>().HasData(
-                new { Id = 1, Name = "GuidoClient", Nick = "La Fonda", Mail = "lafonda@gmail.com" },
-                new { Id = 2, Name = "BrunoClient", Nick = "La Casa", Mail = "wagner.guido.5@gmail.com" }
-            );
         }
     }
 }

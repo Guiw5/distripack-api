@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using DistripackAPI.Persistence;
+using Microsoft.Extensions.Logging;
+
 //using System;
 //using System.Collections.Generic;
 //using System.Linq;
@@ -11,11 +13,13 @@ namespace DistripackAPI.Services.Impl
     {
         protected readonly IMapper mapper;
         protected readonly IUnitOfWork unitOfWork;
+        protected readonly ILogger logger;
 
-        public Service(IMapper mapper, IUnitOfWork unitOfWork)
+        public Service(IMapper mapper, IUnitOfWork unitOfWork, ILogger logger)
         {
             this.mapper = mapper;
             this.unitOfWork = unitOfWork;
+            this.logger = logger;
         }
 
     }

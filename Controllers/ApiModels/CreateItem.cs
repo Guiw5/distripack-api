@@ -14,4 +14,5 @@ namespace DistripackAPI.Controllers.ApiModels
         public double Price { get; set; }
 
     }
+    public class UpdateItem : CreateItem { }
 }

@@ -11,5 +11,7 @@ namespace DistripackAPI.Persistence.Repository
         Task<ICollection<Order>> GetAllCreated();
 
         Task<ICollection<Order>> GetAllPendings();
+
+        Task<ICollection<Order>> GetAllDelivered();
     }
 }

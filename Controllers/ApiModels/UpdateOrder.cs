@@ -10,7 +10,7 @@ namespace DistripackAPI.Controllers.ApiModels
         public int Id { get; set; }
 
         [Required]
-        public ICollection<CreateItem> Items { get; set; }
+        public ICollection<UpdateItem> Items { get; set; }
 
         public DateTime? DeliveryDate { get; set; }
     }

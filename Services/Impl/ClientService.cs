@@ -2,6 +2,7 @@
 using DistripackAPI.Controllers.ApiModels;
 using DistripackAPI.Helper;
 using DistripackAPI.Persistence;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,7 +12,7 @@ namespace DistripackAPI.Services.Impl
     {
         private readonly IEmailSender emailSender;
 
-        public ClientService(IMapper mapper, IUnitOfWork unitOfWork, IEmailSender emailSender) : base(mapper, unitOfWork)
+        public ClientService(IMapper mapper, IUnitOfWork unitOfWork, ILogger<ClientService> logger, IEmailSender emailSender) : base(mapper, unitOfWork, logger)
         {
             this.emailSender = emailSender;
         }
@@ -27,11 +28,34 @@ namespace DistripackAPI.Services.Impl
 
         }
 
+
+        public async Task Modify(UpdateClient apiClient)
+        {
+            var client = await unitOfWork.Clients.Find(c => c.Mail == apiClient.Email);
+
+            if (client != null)
+                client.Update(apiClient);
+            else
+            {
+                logger.LogWarning($"No existe el cliente con Email: {apiClient.Email}");
+                client = new Models.Client(apiClient);
+                unitOfWork.Clients.Add(client);
+
+            }
+            await unitOfWork.Complete();
+        }
+
+
         public async Task<ICollection<Client>> GetAll()
         {
             var clientes = await unitOfWork.Clients.GetAll();
-            emailSender.SendClientRegistrationEmail("guiw_5@hotmail.com", "La Casa de Juan");
             return mapper.Map<IList<Client>>(clientes);
+        }
+
+        public async Task<ICollection<FullClient>> GetAllFull()
+        {
+            var clientes = await unitOfWork.Clients.GetAll();
+            return mapper.Map<IList<FullClient>>(clientes);
         }
 
     }
