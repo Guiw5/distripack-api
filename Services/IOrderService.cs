@@ -11,16 +11,18 @@ namespace DistripackAPI.Services
 
         Task<Order> Modify(UpdateOrder order);
 
-        Task Print(List<int> orders);
+        Task<ICollection<Order>> Print(IList<int> orders);
 
-        Task Deliver(List<int> orders);
+        Task<ICollection<Order>> Deliver(IList<int> orders);
 
-        Task Delete(List<int> orders);
+        Task<ICollection<int>> Delete(IList<int> orders);
 
         Task<ICollection<Order>> GetAllCreated();
 
         Task<ICollection<Order>> GetAllPendings();
 
         Task<ICollection<Order>> GetAllDelivered();
+
+        Task<ICollection<Order>> GetLatestDelivered();
     }
 }

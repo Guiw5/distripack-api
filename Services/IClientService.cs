@@ -12,6 +12,10 @@ namespace DistripackAPI.Services
 
         Task<ICollection<FullClient>> GetAllFull();
 
-        Task Modify(UpdateClient apiClient);
+        Task<Client> Modify(UpdateClient apiClient);
+
+        Task<FullClient> GetClient(int id);
+
+        Task<ClientHistory> GetClientHistory(int id);
     }
 }

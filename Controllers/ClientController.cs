@@ -46,14 +46,59 @@ namespace DistripackAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetClient(int id)
+        {
+            try
+            {
+                var client = await clientService.GetClient(id);
+                if (client == null)
+                    return NotFound(id);
+                return Ok(client);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpGet]
+        [Route("{id}/history")]
+        public async Task<IActionResult> GetHistory(int id)
+        {
+            try
+            {
+                var clientHistory = await clientService.GetClientHistory(id);
+                return Ok(clientHistory);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateClient([FromBody] CreateClient apiClient)
         {
             try
             {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
+                var client = await clientService.Create(apiClient);
+                return Ok(client);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
 
+        }
+
+        [HttpPost]
+        [Route("web")]
+        public async Task<IActionResult> CreateWebClient([FromBody] CreateWebClient apiClient)
+        {
+            try
+            {
                 var client = await clientService.Create(apiClient);
                 return Ok(client);
             }
@@ -69,10 +114,9 @@ namespace DistripackAPI.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
-
-                await clientService.Modify(apiClient);
+                var client = await clientService.Modify(apiClient);
+                if (client == null)
+                    return NotFound(apiClient);
                 return Ok();
             }
             catch (Exception ex)

@@ -100,8 +100,8 @@ namespace DistripackAPI.Persistence
 
             modelBuilder.Entity<Client>().ToTable("Clients");
             modelBuilder.Entity<Client>().HasKey(c => c.Id);
-            modelBuilder.Entity<Client>().Property(c => c.Nick).IsRequired();
-            modelBuilder.Entity<Client>().Property(c => c.Mail).IsRequired();
+            modelBuilder.Entity<Client>().Property(c => c.Nick).HasMaxLength(50);
+            modelBuilder.Entity<Client>().Property(c => c.Email).IsRequired().HasMaxLength(100);
             modelBuilder.Entity<Client>().Property(c => c.FirstName).HasMaxLength(50);
             modelBuilder.Entity<Client>().Property(c => c.LastName).HasMaxLength(50);
             modelBuilder.Entity<Client>().Property(c => c.CelPhone).HasMaxLength(15);

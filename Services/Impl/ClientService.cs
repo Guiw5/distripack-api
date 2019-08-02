@@ -4,6 +4,7 @@ using DistripackAPI.Helper;
 using DistripackAPI.Persistence;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DistripackAPI.Services.Impl
@@ -17,32 +18,62 @@ namespace DistripackAPI.Services.Impl
             this.emailSender = emailSender;
         }
 
+        public async Task<FullClient> GetClient(int id)
+        {
+            var client = await unitOfWork.Clients.Get(id);
+            var pendingAmount = await unitOfWork.Clients.GetBalance(id);
+            if (client == null)
+            {
+                logger.LogWarning($"No existe el cliente con Id: {id}");
+                return null;
+            }
+
+            return mapper.Map<FullClient>(client);
+        }
+
+
+        public async Task<ClientHistory> GetClientHistory(int clientId)
+        {
+            var orders = await unitOfWork.Clients.FindHistory(clientId);
+
+            var clientHistory = new ClientHistory
+            {
+                Orders = mapper.Map<ICollection<Order>>(orders),
+                TotalAmount = orders.Sum(o => o.Subtotal)
+            };
+
+            return clientHistory;
+        }
+
         public async Task<Client> Create(CreateClient apiClient)
         {
             var client = mapper.Map<Models.Client>(apiClient);
             var clientEntry = unitOfWork.Clients.Add(client);
             await unitOfWork.Complete();
 
-            emailSender.SendClientRegistrationEmail(clientEntry.Entity.Mail, clientEntry.Entity.Nick);
+            emailSender.SendClientRegistrationEmail(clientEntry.Entity.Email, clientEntry.Entity.Nick);
             return mapper.Map<Client>(clientEntry.Entity);
 
         }
 
 
-        public async Task Modify(UpdateClient apiClient)
+        public async Task<Client> Modify(UpdateClient apiClient)
         {
-            var client = await unitOfWork.Clients.Find(c => c.Mail == apiClient.Email);
+            var client = await unitOfWork.Clients.Find(c => c.Email == apiClient.Email);
 
-            if (client != null)
-                client.Update(apiClient);
-            else
+            if (client == null)
             {
                 logger.LogWarning($"No existe el cliente con Email: {apiClient.Email}");
-                client = new Models.Client(apiClient);
-                unitOfWork.Clients.Add(client);
-
+                return null;
             }
-            await unitOfWork.Complete();
+            else
+            {
+                client.Update(apiClient);
+                await unitOfWork.Complete();
+            }
+
+
+            return mapper.Map<Client>(client);
         }
 
 

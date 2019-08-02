@@ -8,7 +8,7 @@ namespace DistripackAPI.Models
 
 
         public Item(Order order, CreateItem i)
-            : this(order.Id, i.SkuId, i.Price, i.Quantity, 0)
+            : this(order.Id, i.SkuId.Value, i.Price.Value, i.Quantity.Value, 0)
         {
 
         }

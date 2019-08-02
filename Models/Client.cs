@@ -7,28 +7,6 @@ namespace DistripackAPI.Models
     {
         public Client() { }
 
-        public Client(UpdateClient apiClient) : this(apiClient.FirstName, apiClient.LastName, apiClient.Email, apiClient.BusinessName, apiClient.FantasyName, apiClient.Cuit, apiClient.Dni, apiClient.Address, apiClient.Phone, apiClient.CelPhone, apiClient.Location, apiClient.PostalCode)
-        {
-
-        }
-
-        public Client(string firstName, string lastName, string mail, string businessName, string fantasyName, string cuit, string dni, string address, string phone, string celPhone, string location, string postalCode)
-        {
-            Nick = fantasyName;
-            FirstName = firstName;
-            LastName = lastName;
-            Mail = mail;
-            BusinessName = businessName;
-            FantasyName = fantasyName;
-            Cuit = cuit;
-            Dni = dni;
-            Address = address;
-            Phone = phone;
-            CelPhone = celPhone;
-            Location = location;
-            PostalCode = postalCode;
-        }
-
         //public ApplicationUser User { get; set; }
 
         // public String UserId { get; set; }
@@ -39,7 +17,7 @@ namespace DistripackAPI.Models
 
         public String Nick { get; set; }
 
-        public String Mail { get; set; }
+        public String Email { get; set; }
 
         public String BusinessName { get; set; }
 
@@ -61,17 +39,17 @@ namespace DistripackAPI.Models
 
         internal void Update(UpdateClient apiClient)
         {
-            FirstName = apiClient.FirstName;
-            LastName = apiClient.LastName;
-            CelPhone = apiClient.CelPhone;
-            BusinessName = apiClient.BusinessName;
-            FantasyName = apiClient.FantasyName;
-            Cuit = apiClient.Cuit;
-            Dni = apiClient.Dni;
-            Location = apiClient.Location;
-            Address = apiClient.Address;
-            PostalCode = apiClient.PostalCode;
-            Phone = apiClient.Phone;
+            FirstName = String.IsNullOrEmpty(apiClient.FirstName) ? FirstName : apiClient.FirstName;
+            LastName = String.IsNullOrEmpty(apiClient.FirstName) ? LastName : apiClient.LastName;
+            CelPhone = String.IsNullOrEmpty(apiClient.FirstName) ? CelPhone : apiClient.CelPhone;
+            BusinessName = String.IsNullOrEmpty(apiClient.BusinessName) ? BusinessName : apiClient.BusinessName;
+            FantasyName = String.IsNullOrEmpty(apiClient.FantasyName) ? FantasyName : apiClient.FantasyName;
+            Cuit = String.IsNullOrEmpty(apiClient.Cuit) ? Cuit : apiClient.Cuit;
+            Dni = String.IsNullOrEmpty(apiClient.Dni) ? Dni : apiClient.Dni;
+            Location = String.IsNullOrEmpty(apiClient.Location) ? Location : apiClient.Location;
+            Address = String.IsNullOrEmpty(apiClient.Address) ? Address : apiClient.Address;
+            PostalCode = String.IsNullOrEmpty(apiClient.PostalCode) ? PostalCode : apiClient.PostalCode;
+            Phone = String.IsNullOrEmpty(apiClient.Phone) ? Phone : apiClient.Phone;
         }
 
     }

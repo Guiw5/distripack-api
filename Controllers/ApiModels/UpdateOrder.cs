@@ -7,7 +7,7 @@ namespace DistripackAPI.Controllers.ApiModels
     public class UpdateOrder
     {
         [Required]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [Required]
         public ICollection<UpdateItem> Items { get; set; }

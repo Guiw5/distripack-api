@@ -8,7 +8,7 @@ namespace DistripackAPI.Controllers.ApiModels
 
         public String Nick { get; set; }
 
-        public String Mail { get; set; }
+        public String Email { get; set; }
     }
 
 
@@ -22,7 +22,7 @@ namespace DistripackAPI.Controllers.ApiModels
 
         public String Nick { get; set; }
 
-        public String Mail { get; set; }
+        public String Email { get; set; }
 
         public String BusinessName { get; set; }
 
