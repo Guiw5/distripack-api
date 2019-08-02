@@ -15,7 +15,7 @@ namespace DistripackAPI.Services.Impl
 
         public async Task<Order> Create(CreateOrder apiOrder)
         {
-            var client = await unitOfWork.Clients.Get(apiOrder.ClientId);
+            var client = await unitOfWork.Clients.Get(apiOrder.ClientId.Value);
             if (client == null)
             {
                 logger.LogWarning($"El cliente {apiOrder.ClientId} no existe");
@@ -26,50 +26,56 @@ namespace DistripackAPI.Services.Impl
             var orderEntry = unitOfWork.Orders.Add(order);
             await unitOfWork.Complete();
 
-            return mapper.Map<Order>(orderEntry.Entity);
+            var orderDb = await unitOfWork.Orders.GetWithSku(orderEntry.Entity.Id);
+            return mapper.Map<Order>(orderDb);
         }
 
         public async Task<Order> Modify(UpdateOrder apiOrder)
         {
-            var order = await unitOfWork.Orders.Get(apiOrder.Id);
+            var order = await unitOfWork.Orders.GetWithSku(apiOrder.Id.Value);
             if (order == null)
             {
-                logger.LogWarning($"La orden {apiOrder.Id} no existe");
-                throw new Exception($"La orden {apiOrder.Id} no existe");
+                logger.LogWarning($"La orden {apiOrder.Id.Value} no existe");
+                return null;
             }
 
             order.Modify(apiOrder);
             await unitOfWork.Complete();
+
+            order = await unitOfWork.Orders.GetWithSku(apiOrder.Id.Value);
             return mapper.Map<Order>(order);
         }
 
-        public async Task Print(List<int> orderIds)
+        public async Task<ICollection<Order>> Print(IList<int> orderIds)
         {
-            var orders = await unitOfWork.Orders.FindAll(o => orderIds.Contains(o.Id));
+            var orders = await unitOfWork.Orders.FindAllWithSkus(orderIds);
             foreach (var o in orders)
                 Print(o);
 
-
             await unitOfWork.Complete();
+            return mapper.Map<List<Order>>(orders);
         }
 
-        public async Task Deliver(List<int> orderIds)
+        public async Task<ICollection<Order>> Deliver(IList<int> orderIds)
         {
-            var orders = await unitOfWork.Orders.FindAll(o => orderIds.Contains(o.Id));
+            var orders = await unitOfWork.Orders.FindAllWithSkus(orderIds);
             foreach (var o in orders)
                 Deliver(o);
+
             await unitOfWork.Complete();
+            return mapper.Map<IList<Order>>(orders);
         }
 
 
-        public async Task Delete(List<int> orderIds)
+        public async Task<ICollection<int>> Delete(IList<int> orderIds)
         {
-            var orders = await unitOfWork.Orders.FindAll(o => orderIds.Contains(o.Id));
+            var orders = await unitOfWork.Orders.FindAllWithSkus(orderIds);
             // todo: delete setting deleteDate, not removing from DB
             foreach (var o in orders)
                 Delete(o);
 
             await unitOfWork.Complete();
+            return orderIds;
         }
 
         public async Task<ICollection<Order>> GetAllCreated()
@@ -89,6 +95,13 @@ namespace DistripackAPI.Services.Impl
         public async Task<ICollection<Order>> GetAllDelivered()
         {
             var orders = await unitOfWork.Orders.GetAllDelivered();
+            var apiOrders = mapper.Map<IList<Order>>(orders);
+            return apiOrders;
+        }
+
+        public async Task<ICollection<Order>> GetLatestDelivered()
+        {
+            var orders = await unitOfWork.Orders.GetLatestDelivered();
             var apiOrders = mapper.Map<IList<Order>>(orders);
             return apiOrders;
         }

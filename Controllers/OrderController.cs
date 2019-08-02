@@ -25,11 +25,7 @@ namespace DistripackAPI.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
-
                 var order = await orderService.Create(apiOrder);
-
                 return Ok(order);
             }
             catch (Exception ex)
@@ -45,10 +41,11 @@ namespace DistripackAPI.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
-
                 var order = await orderService.Modify(apiOrder);
+
+                if (order == null)
+                    return NotFound(order);
+
                 return Ok(order);
             }
             catch (Exception ex)
@@ -65,8 +62,8 @@ namespace DistripackAPI.Controllers
             try
             {
                 var orders = new List<int>(orderIds);
-                await orderService.Print(orders);
-                return Ok();
+                var response = await orderService.Print(orders);
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -82,8 +79,8 @@ namespace DistripackAPI.Controllers
             try
             {
                 var orders = new List<int>(orderIds);
-                await orderService.Deliver(orders);
-                return Ok();
+                var response = await orderService.Deliver(orders);
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -98,8 +95,8 @@ namespace DistripackAPI.Controllers
             try
             {
                 var orders = new List<int>(orderIds);
-                await orderService.Delete(orders);
-                return Ok();
+                var response = await orderService.Delete(orders);
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -109,6 +106,7 @@ namespace DistripackAPI.Controllers
 
 
         [HttpGet]
+        [Route("created")]
         public async Task<IActionResult> GetOrders()
         {
             try
@@ -122,8 +120,9 @@ namespace DistripackAPI.Controllers
             }
         }
 
-        [Route("pendings")]
+
         [HttpGet]
+        [Route("pendings")]
         public async Task<IActionResult> GetPendings()
         {
             try
@@ -137,13 +136,13 @@ namespace DistripackAPI.Controllers
             }
         }
 
-        [Route("delivered")]
         [HttpGet]
+        [Route("delivered")]
         public async Task<IActionResult> GetDelivered()
         {
             try
             {
-                var apiOrders = await orderService.GetAllDelivered();
+                var apiOrders = await orderService.GetLatestDelivered();
                 return Ok(apiOrders);
             }
             catch (Exception ex)

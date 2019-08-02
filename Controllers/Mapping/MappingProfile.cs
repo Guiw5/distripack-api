@@ -24,12 +24,13 @@ namespace DistripackAPI.Controllers.Mapping
             CreateMap<Order, ApiModels.Order>()
                 .ForMember(d => d.State, opt => opt.MapFrom(s => s.State.ToString()));
 
-            CreateMap<Client, ApiModels.Client>();
-            CreateMap<Client, ApiModels.FullClient>();
+            CreateMap<Client, ApiModels.Client>()
+                .ForMember(d => d.Nick, opt => opt.MapFrom(s => string.IsNullOrEmpty(s.Nick) ? s.FantasyName : s.Nick));
 
+            CreateMap<Client, FullClient>();
             CreateMap<CreateClient, Client>();
-            CreateMap<UpdateClient, Client>()
-                .ForMember(d => d.Mail, opt => opt.MapFrom(s => s.Email));
+            CreateMap<CreateWebClient, Client>();
+            CreateMap<UpdateClient, Client>();
         }
     }
 }

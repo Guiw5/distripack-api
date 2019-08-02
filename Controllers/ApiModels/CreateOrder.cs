@@ -7,7 +7,7 @@ namespace DistripackAPI.Controllers.ApiModels
     public class CreateOrder : ApiModel
     {
         [Required]
-        public int ClientId { get; set; }
+        public int? ClientId { get; set; }
 
         [Required]
         public ICollection<CreateItem> Items { get; set; }

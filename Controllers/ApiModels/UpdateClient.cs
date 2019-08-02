@@ -8,10 +8,8 @@ namespace DistripackAPI.Controllers.ApiModels
         [Required]
         public String Email { get; set; }
 
-        [Required]
         public String FirstName { get; set; }
 
-        [Required]
         public String LastName { get; set; }
 
         [Required]

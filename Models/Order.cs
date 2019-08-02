@@ -10,7 +10,7 @@ namespace DistripackAPI.Models
     {
 
         public Order(CreateOrder apiOrder)
-            : this(apiOrder.ClientId, apiOrder.Items, apiOrder.DeliveryDate, apiOrder.CreatedAt)
+            : this(apiOrder.ClientId.Value, apiOrder.Items, apiOrder.DeliveryDate, apiOrder.CreatedAt)
         { }
 
         public Order(int clientId, ICollection<CreateItem> items, DateTime? deliveryDate, DateTime? createdAt = null)
@@ -50,23 +50,28 @@ namespace DistripackAPI.Models
 
         public void Modify(UpdateOrder order)
         {
-            var delete = Items.Where(itemDb => order.Items.All(i => i.SkuId != itemDb.SkuId)).ToList();
+            //si todos los items nuevos son distintos al item de la ordenDb -> se eliminó
+            var delete = Items.Where(itemDb => order.Items.All(i => i.Id.HasValue && i.Id.Value != itemDb.Id)).ToList();
 
-            foreach (var i in delete)
-                Items.Remove(i);
+            foreach (var item in delete)
+                Delete(item);
 
-            foreach (var i in order.Items)
+            foreach (var item in order.Items)
             {
-                var item = Items.SingleOrDefault(it => it.SkuId == i.SkuId);
-                if (item == null)
-                    Add(i);
+                if (item.Id.HasValue)
+                    Update(item);
                 else
-                    Update(i);
+                    Add(item);
             }
 
             //UpdateAt = DateTime.Now;
             Discount = 0;
             DeliveryDate = order.DeliveryDate;
+        }
+
+        private void Delete(Item i)
+        {
+            Items.Remove(i);
         }
 
         internal void Print()
@@ -90,28 +95,25 @@ namespace DistripackAPI.Models
 
         public void Add(CreateItem i)
         {
-            Add(i.SkuId, i.Price, i.Quantity);
+            Add(i.SkuId.Value, i.Price.Value, i.Quantity.Value);
         }
 
         public void Update(UpdateItem item)
         {
-            Update(item.SkuId, item.Price, item.Quantity);
+            Update(item.Id.Value, item.Price.Value, item.Quantity.Value);
         }
 
         private void Add(int skuId, double price, int quantity, Double discount = 0)
         {
-            if (Items.Any(i => i.SkuId == skuId))
-                throw new Exception($"El item {skuId} que intenta agregar ya se encuentra en la orden {Id}");
-
             Items.Add(new Item(Id, skuId, price, quantity, discount));
         }
 
-        private void Update(int skuId, double price, int quantity, Double discount = 0)
+        private void Update(int id, double price, int quantity, Double discount = 0)
         {
-            var item = Items.SingleOrDefault(i => i.SkuId == skuId);
+            var item = Items.SingleOrDefault(i => i.Id == id);
 
             if (item == null)
-                throw new Exception($"El item {skuId} que intenta modificar no se encuentra en la orden {Id}");
+                throw new Exception($"El item {id} que intenta modificar no se encuentra en la orden {Id}");
 
             item.Update(price, quantity, discount);
         }

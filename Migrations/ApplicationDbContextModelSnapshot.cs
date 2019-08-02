@@ -57,6 +57,10 @@ namespace DistripackAPI.Migrations
                     b.Property<string>("Dni")
                         .HasMaxLength(11);
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100);
+
                     b.Property<string>("FantasyName")
                         .HasMaxLength(100);
 
@@ -69,11 +73,8 @@ namespace DistripackAPI.Migrations
                     b.Property<string>("Location")
                         .HasMaxLength(50);
 
-                    b.Property<string>("Mail")
-                        .IsRequired();
-
                     b.Property<string>("Nick")
-                        .IsRequired();
+                        .HasMaxLength(50);
 
                     b.Property<string>("Phone")
                         .HasMaxLength(10);
