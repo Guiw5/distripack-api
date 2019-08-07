@@ -1,6 +1,11 @@
-﻿namespace DistripackAPI.Services
+﻿using DistripackAPI.Controllers.ApiModels;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace DistripackAPI.Services
 {
-    internal interface IProductService
+    public interface IProductService
     {
+        Task<ICollection<Product>> GetAll();
     }
 }

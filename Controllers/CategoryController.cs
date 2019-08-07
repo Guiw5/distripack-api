@@ -23,12 +23,12 @@ namespace DistripackAPI.Controllers
 
         //[Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetCategoriessAsync()
+        public async Task<IActionResult> GetCategories()
         {
             var categories = await context.Categories
-                //.Include(c => c.ProductCategories)
-                //.ThenInclude(pc => pc.Product)
-                //.ThenInclude(p => p.Skus)
+                .Include(c => c.ProductCategories)
+                .ThenInclude(pc => pc.Product)
+                .ThenInclude(p => p.Skus)
                 .ToListAsync();
             var cats = mapper.Map<List<Category>>(categories);
             return Ok(cats);
@@ -36,7 +36,7 @@ namespace DistripackAPI.Controllers
 
         [HttpGet]
         [Route("/v2")]
-        public async Task<IEnumerable<Category>> GetCategories2Async()
+        public async Task<IEnumerable<Category>> GetCategoriesV2()
         {
             var categories = await context.Categories
                 .Include(p => p.ProductCategories)

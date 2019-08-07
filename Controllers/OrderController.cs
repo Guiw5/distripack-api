@@ -1,8 +1,6 @@
 ﻿using DistripackAPI.Controllers.ApiModels;
 using DistripackAPI.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -23,85 +21,47 @@ namespace DistripackAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrder apiOrder)
         {
-            try
-            {
-                var order = await orderService.Create(apiOrder);
-                return Ok(order);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex);
-
-            }
+            var order = await orderService.Create(apiOrder);
+            return Ok(order);
         }
 
 
         [HttpPut]
         public async Task<IActionResult> ModifyOrder([FromBody] UpdateOrder apiOrder)
         {
-            try
-            {
-                var order = await orderService.Modify(apiOrder);
+            var order = await orderService.Modify(apiOrder);
 
-                if (order == null)
-                    return NotFound(order);
+            if (order == null)
+                return NotFound(apiOrder);
 
-                return Ok(order);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex);
-
-            }
+            return Ok(order);
         }
 
         [HttpPut]
         [Route("print")]
         public async Task<IActionResult> Print([FromBody] int[] orderIds)
         {
-            try
-            {
-                var orders = new List<int>(orderIds);
-                var response = await orderService.Print(orders);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            var orders = new List<int>(orderIds);
+            var response = await orderService.Print(orders);
+            return Ok(response);
 
-            }
         }
 
         [HttpPut]
         [Route("deliver")]
         public async Task<IActionResult> Deliver([FromBody] int[] orderIds)
         {
-            try
-            {
-                var orders = new List<int>(orderIds);
-                var response = await orderService.Deliver(orders);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex);
-
-            }
+            var orders = new List<int>(orderIds);
+            var response = await orderService.Deliver(orders);
+            return Ok(response);
         }
 
         [HttpDelete]
         public async Task<IActionResult> Delete([FromBody] int[] orderIds)
         {
-            try
-            {
-                var orders = new List<int>(orderIds);
-                var response = await orderService.Delete(orders);
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex);
-            }
+            var orders = new List<int>(orderIds);
+            var response = await orderService.Delete(orders);
+            return Ok(response);
         }
 
 
@@ -109,15 +69,8 @@ namespace DistripackAPI.Controllers
         [Route("created")]
         public async Task<IActionResult> GetOrders()
         {
-            try
-            {
-                var apiOrders = await orderService.GetAllCreated();
-                return Ok(apiOrders);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            var apiOrders = await orderService.GetAllCreated();
+            return Ok(apiOrders);
         }
 
 
@@ -125,30 +78,17 @@ namespace DistripackAPI.Controllers
         [Route("pendings")]
         public async Task<IActionResult> GetPendings()
         {
-            try
-            {
-                var apiOrders = await orderService.GetAllPendings();
-                return Ok(apiOrders);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            var apiOrders = await orderService.GetAllPendings();
+            return Ok(apiOrders);
+
         }
 
         [HttpGet]
         [Route("delivered")]
         public async Task<IActionResult> GetDelivered()
         {
-            try
-            {
-                var apiOrders = await orderService.GetLatestDelivered();
-                return Ok(apiOrders);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            var apiOrders = await orderService.GetLatestDelivered();
+            return Ok(apiOrders);
         }
     }
 }
