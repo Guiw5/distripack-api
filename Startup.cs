@@ -34,6 +34,7 @@ namespace DistripackAPI
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IItemRepository, ItemRepository>();
+            services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IClientService, ClientService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IEmailSender, EmailSender>();
@@ -66,7 +67,6 @@ namespace DistripackAPI
                 app.UseHsts();
             }
 
-            //app.UseStatusCodePages();
             app.UseMiddleware<ExceptionMiddleware>();
             app.UseCors("AllowAllOrigins");
             app.UseHttpsRedirection();
