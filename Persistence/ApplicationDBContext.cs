@@ -29,7 +29,7 @@ namespace DistripackAPI.Persistence
             modelBuilder.Entity<Sku>().HasKey(p => p.Id);
             modelBuilder.Entity<Sku>().Property(p => p.Nick).HasMaxLength(100).IsRequired();
             modelBuilder.Entity<Sku>().Property(p => p.Description).HasMaxLength(150).IsRequired();
-            modelBuilder.Entity<Sku>().Property(p => p.Brand).HasMaxLength(50).IsRequired();
+            modelBuilder.Entity<Sku>().Property(p => p.Brand).HasMaxLength(50);
             modelBuilder.Entity<Sku>().Property(p => p.Color).HasMaxLength(20);
             modelBuilder.Entity<Sku>().Property(p => p.Material).HasMaxLength(50);
             modelBuilder.Entity<Sku>().Property(p => p.Measures).HasMaxLength(20);
