@@ -11,14 +11,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace DistripackAPI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly ILogger logger;
+
+        public Startup(IConfiguration configuration, ILogger<Startup> logger)
         {
             Configuration = configuration;
+            this.logger = logger;
         }
 
         public IConfiguration Configuration { get; }
@@ -35,11 +39,14 @@ namespace DistripackAPI
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AmazonDB")));
+            logger.LogInformation("All services loaded");
 
+            var connectionString = Configuration.GetConnectionString("AmazonDB");
+
+            logger.LogInformation("Adding DB Context: {connectionString}", connectionString);
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AmazonDB")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddCors(options => options.AddPolicy("AllowAllOrigins", builder => { builder.AllowAnyOrigin(); builder.AllowAnyMethod(); builder.AllowAnyHeader(); }));
@@ -50,7 +57,9 @@ namespace DistripackAPI
         {
             if (env.IsDevelopment())
             {
+                logger.LogInformation("In 'Development' environment");
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -58,7 +67,7 @@ namespace DistripackAPI
             }
 
             //app.UseStatusCodePages();
-            //app.UseExceptionHandler();
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseCors("AllowAllOrigins");
             app.UseHttpsRedirection();
             app.UseMvc();

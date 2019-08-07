@@ -1,9 +1,5 @@
-﻿using AutoMapper;
-using DistripackAPI.Controllers.ApiModels;
-using DistripackAPI.Persistence;
+﻿using DistripackAPI.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DistripackAPI.Controllers
@@ -12,29 +8,18 @@ namespace DistripackAPI.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly IUnitOfWork unitOfWork;
-        private readonly IMapper mapper;
+        private readonly IProductService productService;
 
-        public ProductController(IUnitOfWork unitOfWork, IMapper mapper)
+        public ProductController(IProductService productService)
         {
-            this.mapper = mapper;
-            this.unitOfWork = unitOfWork;
+            this.productService = productService;
         }
 
-        //[Authorize]
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
-            try
-            {
-                var productos = await unitOfWork.Products.GetAll();
-                var products = mapper.Map<IList<Product>>(productos);
-                return Ok(products);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            var products = await productService.GetAll();
+            return Ok(products);
         }
     }
 }
