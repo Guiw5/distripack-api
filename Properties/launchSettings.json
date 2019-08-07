@@ -21,14 +21,24 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "DistripackAPI": {
+    "Development": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "api/clients",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Production"
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:5000"
+    },
+    "Production": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "api/clients",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://localhost:5000"
     }
+
   }
 }
