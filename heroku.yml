@@ -1,3 +1,8 @@
-﻿build
-	docker
-		runtime-distripackapi: Dockerfile
+﻿
+build:
+  docker:
+    web: Dockerfile
+  config:
+    ASPNETCORE_ENVIRONMENT: Development
+run:
+  web: dotnet DistripackAPI.dll		
