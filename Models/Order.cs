@@ -82,7 +82,7 @@ namespace DistripackAPI.Models
             State = OrderState.Printed;
         }
 
-        internal void Deliver(DateTime? deliveryDate = null)
+        internal Transaction Deliver(DateTime? deliveryDate = null)
         {
             if (OrderState.Printed.Equals(State) || OrderState.InDelivery.Equals(State))
             {
@@ -91,6 +91,8 @@ namespace DistripackAPI.Models
             }
             else
                 throw new Exception($"La orden {this.Id} ya se encuentra entregada");
+
+            return Transaction.CreateReceipt(this);
         }
 
         public void Add(CreateItem i)

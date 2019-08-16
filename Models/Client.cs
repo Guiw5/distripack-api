@@ -11,6 +11,8 @@ namespace DistripackAPI.Models
 
         // public String UserId { get; set; }
 
+        public CheckingAccount CheckingAccount { get; set; }
+
         public String FirstName { get; set; }
 
         public String LastName { get; set; }

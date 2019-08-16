@@ -36,6 +36,28 @@ namespace DistripackAPI.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("DistripackAPI.Models.CheckingAccount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ClientId");
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<double>("CurrentBalance");
+
+                    b.Property<DateTime>("UpdatedAt");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId")
+                        .IsUnique();
+
+                    b.ToTable("CheckingAccount");
+                });
+
             modelBuilder.Entity("DistripackAPI.Models.Client", b =>
                 {
                     b.Property<int>("Id")
@@ -185,7 +207,8 @@ namespace DistripackAPI.Migrations
                         .HasMaxLength(20);
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<DateTime?>("DeletedAt");
 
@@ -210,13 +233,72 @@ namespace DistripackAPI.Migrations
                     b.Property<int>("Quantity");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .ValueGeneratedOnUpdate();
+                        .ValueGeneratedOnUpdate()
+                        .HasDefaultValueSql("getdate()");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
 
                     b.ToTable("Sku");
+                });
+
+            modelBuilder.Entity("DistripackAPI.Models.Transaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("Amount");
+
+                    b.Property<int>("CheckingAccountId");
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(20);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CheckingAccountId");
+
+                    b.ToTable("Transactions");
+
+                    b.HasDiscriminator<string>("Type").HasValue("Transaction");
+                });
+
+            modelBuilder.Entity("DistripackAPI.Models.Payment", b =>
+                {
+                    b.HasBaseType("DistripackAPI.Models.Transaction");
+
+                    b.Property<int>("Method");
+
+                    b.Property<DateTime>("PaymentAt");
+
+                    b.ToTable("Payment");
+
+                    b.HasDiscriminator().HasValue("Payment");
+                });
+
+            modelBuilder.Entity("DistripackAPI.Models.Receipt", b =>
+                {
+                    b.HasBaseType("DistripackAPI.Models.Transaction");
+
+                    b.Property<int>("OrderId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("Receipt");
+
+                    b.HasDiscriminator().HasValue("Receipt");
+                });
+
+            modelBuilder.Entity("DistripackAPI.Models.CheckingAccount", b =>
+                {
+                    b.HasOne("DistripackAPI.Models.Client", "Client")
+                        .WithOne("CheckingAccount")
+                        .HasForeignKey("DistripackAPI.Models.CheckingAccount", "ClientId");
                 });
 
             modelBuilder.Entity("DistripackAPI.Models.Item", b =>
@@ -258,6 +340,21 @@ namespace DistripackAPI.Migrations
                     b.HasOne("DistripackAPI.Models.Product", "Product")
                         .WithMany("Skus")
                         .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("DistripackAPI.Models.Transaction", b =>
+                {
+                    b.HasOne("DistripackAPI.Models.CheckingAccount", "CheckingAccount")
+                        .WithMany("Transactions")
+                        .HasForeignKey("CheckingAccountId");
+                });
+
+            modelBuilder.Entity("DistripackAPI.Models.Receipt", b =>
+                {
+                    b.HasOne("DistripackAPI.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

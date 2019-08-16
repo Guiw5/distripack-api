@@ -9,5 +9,7 @@ namespace DistripackAPI.Persistence.Repository
         Task<ICollection<Order>> FindHistory(int clientId);
 
         Task<double> GetBalance(int id);
+
+        Task<Client> GetWithAccount(int id);
     }
 }

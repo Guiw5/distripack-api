@@ -8,8 +8,6 @@ namespace DistripackAPI.Persistence.Repository
     {
         Task<ICollection<Order>> FindAllWithSkus(IList<int> orderIds);
 
-        Task<ICollection<Order>> GetAllWithSkus();
-
         Task<ICollection<Order>> GetAllCreated();
 
         Task<ICollection<Order>> GetAllPendings();
@@ -19,5 +17,7 @@ namespace DistripackAPI.Persistence.Repository
         Task<ICollection<Order>> GetLatestDelivered();
 
         Task<Order> GetWithSku(int id);
+
+        Task<ICollection<Order>> FindAllWithClientAccount(IList<int> orderIds);
     }
 }

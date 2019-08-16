@@ -16,6 +16,14 @@ namespace DistripackAPI.Persistence
 
         public DbSet<Item> Items { get; set; }
 
+        public DbSet<CheckingAccount> CheckingAccounts { get; set; }
+
+        public DbSet<Transaction> Transactions { get; set; }
+
+        public DbSet<Payment> Payments { get; set; }
+
+        public DbSet<Receipt> Receipt { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -35,8 +43,8 @@ namespace DistripackAPI.Persistence
             modelBuilder.Entity<Sku>().Property(p => p.Measures).HasMaxLength(20);
             modelBuilder.Entity<Sku>().Property(p => p.Capacity).HasMaxLength(20);
             modelBuilder.Entity<Sku>().Property(p => p.Price).IsRequired();
-            modelBuilder.Entity<Sku>().Property(p => p.CreatedAt).ValueGeneratedOnAdd();
-            modelBuilder.Entity<Sku>().Property(p => p.UpdatedAt).ValueGeneratedOnUpdate();
+            modelBuilder.Entity<Sku>().Property(p => p.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("getdate()");
+            modelBuilder.Entity<Sku>().Property(p => p.UpdatedAt).ValueGeneratedOnUpdate().HasDefaultValueSql("getdate()");
             modelBuilder.Entity<Sku>()
                 .HasOne(p => p.Product)
                 .WithMany(p => p.Skus)
@@ -113,6 +121,52 @@ namespace DistripackAPI.Persistence
             modelBuilder.Entity<Client>().Property(c => c.Address).HasMaxLength(100);
             modelBuilder.Entity<Client>().Property(c => c.PostalCode).HasMaxLength(8);
             modelBuilder.Entity<Client>().Property(c => c.Phone).HasMaxLength(10);
+            modelBuilder.Entity<Client>()
+                .HasOne(c => c.CheckingAccount)
+                .WithOne(ca => ca.Client)
+                .HasForeignKey<CheckingAccount>(ca => ca.ClientId);
+
+
+            modelBuilder.Entity<CheckingAccount>().ToTable("CheckingAccount");
+            modelBuilder.Entity<CheckingAccount>().HasKey(c => c.Id);
+            modelBuilder.Entity<CheckingAccount>().Property(c => c.ClientId).IsRequired();
+            modelBuilder.Entity<CheckingAccount>().Property(c => c.CurrentBalance).IsRequired();
+            modelBuilder.Entity<CheckingAccount>().Property(c => c.CreatedAt).IsRequired();
+            modelBuilder.Entity<CheckingAccount>().Property(c => c.UpdatedAt).IsRequired();
+
+            modelBuilder.Entity<CheckingAccount>()
+                .HasOne(c => c.Client)
+                .WithOne(cl => cl.CheckingAccount)
+                .HasForeignKey<CheckingAccount>(c => c.ClientId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            modelBuilder.Entity<CheckingAccount>()
+                .HasMany(c => c.Transactions)
+                .WithOne(c => c.CheckingAccount)
+                .HasForeignKey(c => c.CheckingAccountId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+
+            modelBuilder.Entity<Transaction>().ToTable("Transactions");
+            modelBuilder.Entity<Transaction>().HasDiscriminator(t => t.Type);
+            modelBuilder.Entity<Transaction>().HasKey(t => t.Id);
+            modelBuilder.Entity<Transaction>().HasIndex(t => t.CheckingAccountId);
+            modelBuilder.Entity<Transaction>().Property(t => t.Type).IsRequired().HasMaxLength(20);
+            modelBuilder.Entity<Transaction>().Property(t => t.CreatedAt).IsRequired();
+            modelBuilder.Entity<Transaction>().Property(t => t.Amount).IsRequired();
+            modelBuilder.Entity<Transaction>()
+                .HasOne(t => t.CheckingAccount)
+                .WithMany(c => c.Transactions);
+
+            modelBuilder.Entity<Payment>().HasBaseType<Transaction>();
+            modelBuilder.Entity<Payment>().Property(p => p.PaymentAt).IsRequired();
+            modelBuilder.Entity<Payment>().Property(p => p.Method).IsRequired();
+
+            modelBuilder.Entity<Receipt>().HasBaseType<Transaction>();
+            modelBuilder.Entity<Receipt>().HasOne(r => r.Order);
+            modelBuilder.Entity<Receipt>().Property(r => r.OrderId).IsRequired();
+
+
 
         }
     }

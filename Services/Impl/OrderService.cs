@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Order = DistripackAPI.Controllers.ApiModels.Order;
 
 namespace DistripackAPI.Services.Impl
 {
@@ -17,13 +18,19 @@ namespace DistripackAPI.Services.Impl
         {
             var client = await unitOfWork.Clients.Get(apiOrder.ClientId.Value);
             if (client == null)
-            {
-                logger.LogWarning($"El cliente {apiOrder.ClientId} no existe");
                 throw new Exception($"El cliente {apiOrder.ClientId} no existe");
-            }
 
             var order = new Models.Order(apiOrder);
             var orderEntry = unitOfWork.Orders.Add(order);
+
+            //if the client doesn't have a checkingAccount, should be created 
+            var account = await unitOfWork.CheckingAccounts.Find(a => a.ClientId == client.Id);
+            if (account == null)
+            {
+                account = new Models.CheckingAccount(client.Id, 0);
+                unitOfWork.CheckingAccounts.Add(account);
+            }
+
             await unitOfWork.Complete();
 
             var orderDb = await unitOfWork.Orders.GetWithSku(orderEntry.Entity.Id);
@@ -58,9 +65,17 @@ namespace DistripackAPI.Services.Impl
 
         public async Task<ICollection<Order>> Deliver(IList<int> orderIds)
         {
-            var orders = await unitOfWork.Orders.FindAllWithSkus(orderIds);
+            var orders = await unitOfWork.Orders.FindAllWithClientAccount(orderIds);
             foreach (var o in orders)
-                Deliver(o);
+            {
+                if (o.Client.CheckingAccount == null)
+                    throw new Exception($"El cliente {o.ClientId} no tiene cuenta corriente");
+
+                //when order is delivered, a Receipt transaction is created
+                var transaction = o.Deliver();
+                unitOfWork.Transactions.Add(transaction);
+            }
+
 
             await unitOfWork.Complete();
             return mapper.Map<IList<Order>>(orders);
@@ -111,18 +126,6 @@ namespace DistripackAPI.Services.Impl
             try
             {
                 o.Print();
-            }
-            catch (Exception e)
-            {
-                logger.LogWarning(e.Message);
-            }
-        }
-
-        private void Deliver(Models.Order o)
-        {
-            try
-            {
-                o.Deliver();
             }
             catch (Exception e)
             {

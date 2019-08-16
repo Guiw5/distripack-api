@@ -14,6 +14,10 @@ namespace DistripackAPI.Persistence
 
         IItemRepository Items { get; }
 
+        ICheckingAccountRepository CheckingAccounts { get; }
+
+        ITransactionRepository Transactions { get; }
+
         Task Complete();
     }
 }

@@ -30,13 +30,19 @@ namespace DistripackAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<ICheckingAccountRepository, CheckingAccountRepository>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IItemRepository, ItemRepository>();
+
+            services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IClientService, ClientService>();
             services.AddScoped<IOrderService, OrderService>();
+
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

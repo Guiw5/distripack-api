@@ -4,7 +4,15 @@ using System.Linq;
 using Client = DistripackAPI.Models.Client;
 using Item = DistripackAPI.Models.Item;
 using Order = DistripackAPI.Models.Order;
+using Payment = DistripackAPI.Models.Payment;
 using Product = DistripackAPI.Models.Product;
+using Receipt = DistripackAPI.Models.Receipt;
+using Transaction = DistripackAPI.Models.Transaction;
+
+//using Client = DistripackAPI.Models.Client;
+//using Item = DistripackAPI.Models.Item;
+//using Order = DistripackAPI.Models.Order;
+//using Product = DistripackAPI.Models.Product;
 
 namespace DistripackAPI.Controllers.Mapping
 {
@@ -31,6 +39,20 @@ namespace DistripackAPI.Controllers.Mapping
             CreateMap<CreateClient, Client>();
             CreateMap<CreateWebClient, Client>();
             CreateMap<UpdateClient, Client>();
+
+            CreateMap<Transaction, ApiModels.Transaction>()
+                .Include<Payment, ApiModels.Transaction>()
+                .Include<Receipt, ApiModels.Transaction>()
+                .ForMember(d => d.AccountId, opt => opt.MapFrom(s => s.CheckingAccountId))
+                .ForMember(d => d.ClientId, opt => opt.MapFrom(s => s.CheckingAccount.ClientId))
+                .ForMember(d => d.CurrentBalance, opt => opt.MapFrom(s => s.CheckingAccount.CurrentBalance));
+
+            CreateMap<Payment, ApiModels.Transaction>()
+                .ForMember(d => d.Method, opt => opt.MapFrom(s => s.Method.ToString()));
+
+            CreateMap<Receipt, ApiModels.Transaction>();
+
         }
     }
 }
+

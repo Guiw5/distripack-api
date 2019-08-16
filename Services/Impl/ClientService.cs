@@ -21,7 +21,6 @@ namespace DistripackAPI.Services.Impl
         public async Task<FullClient> GetClient(int id)
         {
             var client = await unitOfWork.Clients.Get(id);
-            var pendingAmount = await unitOfWork.Clients.GetBalance(id);
             if (client == null)
             {
                 logger.LogWarning($"No existe el cliente con Id: {id}");
@@ -79,14 +78,14 @@ namespace DistripackAPI.Services.Impl
 
         public async Task<ICollection<Client>> GetAll()
         {
-            var clientes = await unitOfWork.Clients.GetAll();
-            return mapper.Map<IList<Client>>(clientes);
+            var clients = await unitOfWork.Clients.GetAll();
+            return mapper.Map<IList<Client>>(clients);
         }
 
         public async Task<ICollection<FullClient>> GetAllFull()
         {
-            var clientes = await unitOfWork.Clients.GetAll();
-            return mapper.Map<IList<FullClient>>(clientes);
+            var clients = await unitOfWork.Clients.GetAll();
+            return mapper.Map<IList<FullClient>>(clients);
         }
 
     }

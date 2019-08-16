@@ -29,7 +29,7 @@ namespace DistripackAPI.Persistence.Repository.Impl
         {
             return await Context.Orders.Where(o => orderIds.Contains(o.Id))
                 .Include(o => o.Items)
-                .ThenInclude(i => i.Sku)
+                    .ThenInclude(i => i.Sku)
                 .OrderBy(o => o.CreatedAt)
                 .ToListAsync();
         }
@@ -38,7 +38,7 @@ namespace DistripackAPI.Persistence.Repository.Impl
         {
             return await Context.Orders.Where(o => OrderState.Created.Equals(o.State))
                 .Include(o => o.Items)
-                .ThenInclude(i => i.Sku)
+                    .ThenInclude(i => i.Sku)
                 .OrderBy(o => o.CreatedAt)
                 .ToListAsync();
         }
@@ -47,7 +47,7 @@ namespace DistripackAPI.Persistence.Repository.Impl
         {
             return await Context.Orders.Where(o => OrderState.Created < o.State && OrderState.Delivered > o.State)
                 .Include(o => o.Items)
-                .ThenInclude(i => i.Sku)
+                    .ThenInclude(i => i.Sku)
                 .OrderBy(o => o.DeliveryDate)
                 .ToListAsync();
         }
@@ -67,7 +67,7 @@ namespace DistripackAPI.Persistence.Repository.Impl
             var aMonthAgo = DateTime.Today.AddDays(-30);
             return await Context.Orders.Where(o => OrderState.Delivered.Equals(o.State) && o.DeliveredAt.Value.CompareTo(aMonthAgo) > 0)
                 .Include(o => o.Items)
-                .ThenInclude(i => i.Sku)
+                    .ThenInclude(i => i.Sku)
                 .OrderByDescending(o => o.DeliveryDate)
                 .ToListAsync();
         }
@@ -86,10 +86,18 @@ namespace DistripackAPI.Persistence.Repository.Impl
         {
             return await Context.Orders
                 .Include(o => o.Items)
-                .ThenInclude(i => i.Sku)
+                    .ThenInclude(i => i.Sku)
                 .SingleOrDefaultAsync(o => o.Id == id);
         }
 
-
+        public async Task<ICollection<Order>> FindAllWithClientAccount(IList<int> orderIds)
+        {
+            return await Context.Orders.Where(o => orderIds.Contains(o.Id))
+                .Include(o => o.Items)
+                    .ThenInclude(i => i.Sku)
+                .Include(o => o.Client)
+                    .ThenInclude(c => c.CheckingAccount)
+                .ToListAsync();
+        }
     }
 }
