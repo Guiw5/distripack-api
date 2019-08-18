@@ -7,7 +7,6 @@ COPY *.sln ./
 RUN dotnet restore
 
 # Copy everything else and build
-#COPY app/bin/Release/netcoreapp2.1/publish/ app/
 COPY . ./
 RUN dotnet publish -c Release -o out
 
