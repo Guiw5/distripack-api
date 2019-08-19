@@ -75,7 +75,7 @@ namespace DistripackAPI
 
             app.UseMiddleware<ExceptionMiddleware>();
             app.UseCors("AllowAllOrigins");
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseMvc();
         }
     }
