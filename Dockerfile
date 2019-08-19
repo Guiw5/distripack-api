@@ -6,9 +6,13 @@ COPY *.csproj ./
 COPY *.sln ./
 RUN dotnet restore
 
-# Copy everything else and build
+# Copy everything else and publish
 COPY . ./
 RUN dotnet publish -c Release -o out
+
+# Create Certificates
+WORKDIR /app/out
+RUN dotnet dev-certs https -ep "localhost.pfx" -p 1234 --trust
 
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.1 as runtime
