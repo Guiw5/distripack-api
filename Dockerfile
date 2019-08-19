@@ -15,4 +15,6 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:2.1 as runtime
 WORKDIR /app
 RUN dotnet --info
 COPY --from=build-env /app/out ./
+ENV ASPNETCORE_URLS=http://+:8080
+EXPOSE 8080
 CMD dotnet DistripackAPI.dll
