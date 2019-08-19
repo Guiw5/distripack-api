@@ -10,11 +10,6 @@ RUN dotnet restore
 COPY . ./
 RUN dotnet publish -c Release -o out
 
-# Create Certificates
-WORKDIR /app/out
-RUN dotnet tool install --global dotnet-dev-certs
-RUN dotnet dev-certs https -ep "localhost.pfx" -p 1234 --trust
-
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.1 as runtime
 WORKDIR /app
