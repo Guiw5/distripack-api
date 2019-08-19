@@ -11,7 +11,8 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/core/runtime:2.1 as runtime
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.1 as runtime
 WORKDIR /app
+RUN dotnet --info
 COPY --from=build-env /app/out ./
-ENTRYPOINT ["dotnet", "DistripackAPI.dll"]
+CMD dotnet DistripackAPI.dll

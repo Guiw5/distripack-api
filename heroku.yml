@@ -6,4 +6,4 @@ build:
     ASPNETCORE_ENVIRONMENT: Development
     ASPNETCORE_DETAILEDERRORS: 1,
 run:
-  web: dotnet DistripackAPI.dll		
+  web: dotnet DistripackAPI.dll
