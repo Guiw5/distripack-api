@@ -14,6 +14,5 @@ RUN dotnet publish -c Release -o out
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.1 as runtime
 WORKDIR /app
 RUN dotnet --info
-RUN dotnet dev-certs https -t -v
 COPY --from=build-env /app/out ./
 CMD dotnet DistripackAPI.dll
