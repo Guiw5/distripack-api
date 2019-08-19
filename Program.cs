@@ -12,7 +12,7 @@ namespace DistripackAPI
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseKestrel(options => options.ListenAnyIP(8080))
+                .UseKestrel(options => options.ListenAnyIP(5080))
                 .UseStartup<Startup>()
                 .CaptureStartupErrors(true);//to handle exception in startup
     }
