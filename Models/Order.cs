@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace DistripackAPI.Models
 {
-    public class Order : Entity
+    public class Order
     {
 
         public Order(CreateOrder apiOrder)
@@ -27,6 +27,8 @@ namespace DistripackAPI.Models
         {
             Items = new Collection<Item>();
         }
+
+        public int Id { get; set; }
 
         public Client Client { get; private set; }
 

@@ -3,13 +3,15 @@ using System;
 
 namespace DistripackAPI.Models
 {
-    public class Client : Entity
+    public class Client
     {
         public Client() { }
 
         //public ApplicationUser User { get; set; }
 
         // public String UserId { get; set; }
+
+        public int Id { get; set; }
 
         public CheckingAccount CheckingAccount { get; set; }
 

@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace DistripackAPI.Models
 {
-    public class CheckingAccount : Entity
+    public class CheckingAccount
     {
         public CheckingAccount()
         {
@@ -19,6 +19,7 @@ namespace DistripackAPI.Models
             CurrentBalance = currentBalance;
         }
 
+        public int Id { get; set; }
         public int ClientId { get; private set; }
         public Client Client { get; private set; }
         public double CurrentBalance { get; private set; }

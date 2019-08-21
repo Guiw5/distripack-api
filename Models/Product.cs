@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace DistripackAPI.Models
 {
-    public class Product : Entity
+    public class Product
     {
         public Product()
         {

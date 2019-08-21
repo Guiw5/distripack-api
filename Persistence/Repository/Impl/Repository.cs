@@ -1,5 +1,4 @@
-﻿using DistripackAPI.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DistripackAPI.Persistence.Repository.Impl
 {
-    public abstract class Repository<T> : IRepository<T> where T : Entity
+    public abstract class Repository<T> : IRepository<T> where T : class
     {
         protected readonly ApplicationDbContext Context;
 

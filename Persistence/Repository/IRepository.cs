@@ -1,5 +1,4 @@
-﻿using DistripackAPI.Models;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 namespace DistripackAPI.Persistence.Repository
 {
     public interface IRepository { }
-    public interface IRepository<T> : IRepository where T : Entity
+    public interface IRepository<T> : IRepository where T : class
     {
 
         /// <summary>

@@ -10,7 +10,7 @@ namespace DistripackAPI.Models
     }
 
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
-    public abstract class Transaction : Entity
+    public abstract class Transaction
     {
         protected Transaction(TransactionType type)
         {
@@ -23,7 +23,7 @@ namespace DistripackAPI.Models
             Amount = amount;
             CheckingAccountId = checkingAccountId;
         }
-
+        public int Id { get; set; }
         public int CheckingAccountId { get; private set; }
         public CheckingAccount CheckingAccount { get; private set; }
         public double Amount { get; private set; }

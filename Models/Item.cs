@@ -3,7 +3,7 @@ using System;
 
 namespace DistripackAPI.Models
 {
-    public class Item : Entity
+    public class Item
     {
 
 
@@ -26,6 +26,8 @@ namespace DistripackAPI.Models
         {
             Discount = 0;
         }
+
+        public int Id { get; set; }
 
         public int OrderId { get; private set; }
 
