@@ -77,7 +77,7 @@ namespace DistripackAPI.Models
         internal void Print()
         {
             if (OrderState.Printed < State)
-                throw new Exception($"La orden {this.Id} ya se encuentra impresa");
+                throw new Exception($"La orden { Id } ya se encuentra impresa");
 
             State = OrderState.Printed;
         }
@@ -90,9 +90,9 @@ namespace DistripackAPI.Models
                 DeliveredAt = deliveryDate ?? DateTime.Now;
             }
             else
-                throw new Exception($"La orden {this.Id} ya se encuentra entregada");
+                throw new Exception($"La orden { Id } ya se encuentra entregada");
 
-            return Transaction.CreateReceipt(this);
+            return Client.AddReceipt(this);
         }
 
         public void Add(CreateItem i)

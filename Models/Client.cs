@@ -54,5 +54,22 @@ namespace DistripackAPI.Models
             Phone = String.IsNullOrEmpty(apiClient.Phone) ? Phone : apiClient.Phone;
         }
 
+        public Payment AddPayment(CreatePayment payment)
+        {
+            if (CheckingAccount == null)
+                throw new Exception($"the client: { Id } doesn't have a checking account");
+
+            return CheckingAccount.AddPayment(payment);
+
+        }
+
+        public Transaction AddReceipt(Order order)
+        {
+            if (CheckingAccount == null)
+                throw new Exception($"El cliente { Id } no tiene cuenta corriente");
+
+            return CheckingAccount.AddReceipt(order);
+
+        }
     }
 }

@@ -57,7 +57,7 @@ namespace DistripackAPI.Services.Impl
         {
             var orders = await unitOfWork.Orders.FindAllWithSkus(orderIds);
             foreach (var o in orders)
-                Print(o);
+                o.Print();
 
             await unitOfWork.Complete();
             return mapper.Map<List<Order>>(orders);
@@ -66,16 +66,9 @@ namespace DistripackAPI.Services.Impl
         public async Task<ICollection<Order>> Deliver(IList<int> orderIds)
         {
             var orders = await unitOfWork.Orders.FindAllWithClientAccount(orderIds);
+
             foreach (var o in orders)
-            {
-                if (o.Client.CheckingAccount == null)
-                    throw new Exception($"El cliente {o.ClientId} no tiene cuenta corriente");
-
-                //when order is delivered, a Receipt transaction is created
-                var transaction = o.Deliver();
-                unitOfWork.Transactions.Add(transaction);
-            }
-
+                o.Deliver();    //when order is delivered, a "Receipt" Transaction is created
 
             await unitOfWork.Complete();
             return mapper.Map<IList<Order>>(orders);
@@ -87,7 +80,7 @@ namespace DistripackAPI.Services.Impl
             var orders = await unitOfWork.Orders.FindAllWithSkus(orderIds);
             // todo: delete setting deleteDate, not removing from DB
             foreach (var o in orders)
-                Delete(o);
+                o.Delete();
 
             await unitOfWork.Complete();
             return orderIds;
@@ -119,30 +112,6 @@ namespace DistripackAPI.Services.Impl
             var orders = await unitOfWork.Orders.GetLatestDelivered();
             var apiOrders = mapper.Map<IList<Order>>(orders);
             return apiOrders;
-        }
-
-        private void Print(Models.Order o)
-        {
-            try
-            {
-                o.Print();
-            }
-            catch (Exception e)
-            {
-                logger.LogWarning(e.Message);
-            }
-        }
-
-        private void Delete(Models.Order o)
-        {
-            try
-            {
-                o.Delete();
-            }
-            catch (Exception e)
-            {
-                logger.LogWarning(e.Message);
-            }
         }
 
     }

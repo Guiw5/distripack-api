@@ -1,5 +1,4 @@
-﻿using DistripackAPI.Controllers.ApiModels;
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace DistripackAPI.Models
@@ -30,20 +29,6 @@ namespace DistripackAPI.Models
         public double Amount { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public string Type { get; private set; }
-
-
-        //moment to dispatch an event, and execute some actions and logs
-        public static Payment CreatePayment(int checkingAccountId, CreatePayment payment)
-        {
-            return new Payment(checkingAccountId, payment.Method, payment.PaymentAt, payment.Amount.Value);
-        }
-
-        //moment to dispatch an event, and execute some actions and logs
-        public static Receipt CreateReceipt(Order order)
-        {
-            return new Receipt(order.Client.CheckingAccount.Id, order.Id, order.Subtotal);
-        }
-
     }
 
     public class Payment : Transaction

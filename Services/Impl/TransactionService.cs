@@ -2,7 +2,6 @@
 using DistripackAPI.Controllers.ApiModels;
 using DistripackAPI.Persistence;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Client = DistripackAPI.Models.Client;
@@ -25,16 +24,9 @@ namespace DistripackAPI.Services.Impl
             if (client == null)
                 return null; //notFound()
 
-
-            if (client.CheckingAccount == null)
-                throw new Exception($"the client: { payment.ClientId } doesn't have a checking account");
-
-            var newPayment = Models.Transaction.CreatePayment(client.CheckingAccount.Id, payment);
-
-            var entry = unitOfWork.Transactions.Add(newPayment);
+            var paymentDb = client.AddPayment(payment);
             await unitOfWork.Complete();
-            await entry.Reference(x => x.CheckingAccount).LoadAsync();
-            return mapper.Map<Transaction>(entry.Entity);
+            return mapper.Map<Transaction>(paymentDb);
         }
 
         public async Task<ICollection<Transaction>> GetTransactions(int clientId)
