@@ -9,11 +9,6 @@ using Product = DistripackAPI.Models.Product;
 using Receipt = DistripackAPI.Models.Receipt;
 using Transaction = DistripackAPI.Models.Transaction;
 
-//using Client = DistripackAPI.Models.Client;
-//using Item = DistripackAPI.Models.Item;
-//using Order = DistripackAPI.Models.Order;
-//using Product = DistripackAPI.Models.Product;
-
 namespace DistripackAPI.Controllers.Mapping
 {
     public class MappingProfile : Profile
@@ -41,16 +36,16 @@ namespace DistripackAPI.Controllers.Mapping
             CreateMap<UpdateClient, Client>();
 
             CreateMap<Transaction, ApiModels.Transaction>()
-                .Include<Payment, ApiModels.Transaction>()
-                .Include<Receipt, ApiModels.Transaction>()
+                .Include<Payment, ApiModels.Payment>()
+                .Include<Receipt, ApiModels.Receipt>()
                 .ForMember(d => d.AccountId, opt => opt.MapFrom(s => s.CheckingAccountId))
                 .ForMember(d => d.ClientId, opt => opt.MapFrom(s => s.CheckingAccount.ClientId))
                 .ForMember(d => d.CurrentBalance, opt => opt.MapFrom(s => s.CheckingAccount.CurrentBalance));
 
-            CreateMap<Payment, ApiModels.Transaction>()
+            CreateMap<Payment, ApiModels.Payment>()
                 .ForMember(d => d.Method, opt => opt.MapFrom(s => s.Method.ToString()));
 
-            CreateMap<Receipt, ApiModels.Transaction>();
+            CreateMap<Receipt, ApiModels.Receipt>();
 
         }
     }

@@ -21,8 +21,5 @@ namespace DistripackAPI.Controllers.ApiModels
         public double Amount { get; set; }
         public DateTime CreatedAt { get; set; }
         public string Type { get; set; }
-        public int? OrderId { get; set; }
-        public string Method { get; set; }
-        public DateTime? PaymentAt { get; set; }
     }
 }
