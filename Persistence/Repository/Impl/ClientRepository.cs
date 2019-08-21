@@ -1,6 +1,5 @@
 ﻿using DistripackAPI.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,32 +27,8 @@ namespace DistripackAPI.Persistence.Repository.Impl
             return await Context.Clients
                 .Where(c => c.Id == clientId)
                 .Include(c => c.CheckingAccount)
-                .AsNoTracking()
                 .SingleOrDefaultAsync();
         }
-
-
-        public async Task<ICollection<Transaction>> GetTransactions(int clientId)
-        {
-            //retrieving last two months of transactions
-            var twoMonthsAgo = DateTime.Today.AddDays(-60);
-            return await Context.Transactions
-                .Include(t => t.CheckingAccount)
-                .Where(t => t.CheckingAccount.ClientId == clientId && t.CreatedAt.CompareTo(twoMonthsAgo) > 0)
-                .OrderBy(t => t.CreatedAt)
-                .ToListAsync();
-
-            //var client = await Context.Clients
-            //.Where(c => c.Id == clientId)
-            //.Include(c => c.CheckingAccount)
-            //.ThenInclude(c => c.Transactions)
-            //.SingleOrDefaultAsync();
-
-
-            //return client.CheckingAccount.Transactions;
-        }
-
-
 
         /// <summary>
         ///    This method should be linked to a checking account
