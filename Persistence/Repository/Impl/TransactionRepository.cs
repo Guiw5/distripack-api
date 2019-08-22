@@ -22,7 +22,7 @@ namespace DistripackAPI.Persistence.Repository.Impl
 
             return await Context.Transactions
                 .Include(x => x.CheckingAccount)
-                .Where(x => x.CheckingAccount.ClientId == clientId && x.CreatedAt.CompareTo(lastYear) > 0)
+                .Where(x => x.CheckingAccount.ClientId == clientId && x.CreatedAt > lastYear)
                 .OrderBy(x => x.CreatedAt)
                 .ToListAsync();
 

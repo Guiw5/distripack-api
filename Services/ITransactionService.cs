@@ -11,5 +11,7 @@ namespace DistripackAPI.Services
         Task<ICollection<Transaction>> GetTransactions(int clientId);
 
         Task<CheckingAccount> GetCheckingAccount(int clientId);
+
+        Task<CheckingAccount> SetCheckingAccount(int clientId, int amount);
     }
 }

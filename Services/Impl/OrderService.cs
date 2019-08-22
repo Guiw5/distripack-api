@@ -23,7 +23,7 @@ namespace DistripackAPI.Services.Impl
             var order = new Models.Order(apiOrder);
             var orderEntry = unitOfWork.Orders.Add(order);
 
-            //if the client doesn't have a checkingAccount, should be created 
+            //if the client doesn't have a checkingAccount, should be initialized in zero
             var account = await unitOfWork.CheckingAccounts.Find(a => a.ClientId == client.Id);
             if (account == null)
             {

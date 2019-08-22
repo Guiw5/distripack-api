@@ -40,5 +40,10 @@ namespace DistripackAPI.Services.Impl
             var account = await unitOfWork.CheckingAccounts.Find(c => c.ClientId == clientId);
             return mapper.Map<CheckingAccount>(account);
         }
+
+        public Task<CheckingAccount> SetCheckingAccount(int clientId, int amount)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
