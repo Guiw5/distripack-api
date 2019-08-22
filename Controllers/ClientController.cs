@@ -52,7 +52,7 @@ namespace DistripackAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateClient([FromBody] CreateClient apiClient)
+        public async Task<IActionResult> CreateClient([FromBody] CreateThinClient apiClient)
         {
             var client = await clientService.Create(apiClient);
             return Ok(client);
