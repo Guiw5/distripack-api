@@ -28,7 +28,7 @@ namespace DistripackAPI.Controllers.Mapping
                 .ForMember(d => d.Nick, opt => opt.MapFrom(s => string.IsNullOrEmpty(s.Nick) ? s.FantasyName : s.Nick));
 
             CreateMap<Client, FullClient>();
-            CreateMap<CreateClient, Client>();
+            CreateMap<CreateThinClient, Client>();
             CreateMap<CreateWebClient, Client>();
             CreateMap<UpdateClient, Client>();
         }
