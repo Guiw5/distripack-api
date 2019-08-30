@@ -48,6 +48,8 @@ namespace DistripackAPI.Migrations
 
                     b.Property<double>("CurrentBalance");
 
+                    b.Property<double>("InitialAmount");
+
                     b.Property<DateTime>("UpdatedAt");
 
                     b.HasKey("Id");
