@@ -30,17 +30,26 @@ namespace DistripackAPI.Models
         public Receipt AddReceipt(Order order)
         {
             var receipt = new Receipt(Id, order.Id, order.Subtotal);
-            CurrentBalance += receipt.Amount;
-            Transactions.Add(receipt);
+            AddTransaction(receipt);
             return receipt;
         }
 
         public Payment AddPayment(CreatePayment apiPayment)
         {
-            var payment = new Payment(Id, apiPayment.Method, apiPayment.PaymentAt, apiPayment.Amount.Value);
-            CurrentBalance -= payment.Amount;
-            Transactions.Add(payment);
+            if (!apiPayment.Amount.HasValue)
+                throw new Exception($"El pago del cliente '{ClientId}' debe contener un monto");
+
+            var signedAmount = -Math.Abs(apiPayment.Amount.Value);
+            var payment = new Payment(Id, apiPayment.Method, apiPayment.PaymentAt, signedAmount);
+            AddTransaction(payment);
             return payment;
+        }
+
+        private void AddTransaction(Transaction transaction)
+        {
+            CurrentBalance += transaction.Amount;
+            transaction.CurrentBalance = CurrentBalance;
+            Transactions.Add(transaction);
         }
     }
 }

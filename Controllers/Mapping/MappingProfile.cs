@@ -39,8 +39,7 @@ namespace DistripackAPI.Controllers.Mapping
                 .Include<Payment, ApiModels.Payment>()
                 .Include<Receipt, ApiModels.Receipt>()
                 .ForMember(d => d.AccountId, opt => opt.MapFrom(s => s.CheckingAccountId))
-                .ForMember(d => d.ClientId, opt => opt.MapFrom(s => s.CheckingAccount.ClientId))
-                .ForMember(d => d.CurrentBalance, opt => opt.MapFrom(s => s.CheckingAccount.CurrentBalance));
+                .ForMember(d => d.ClientId, opt => opt.MapFrom(s => s.CheckingAccount.ClientId));
 
             CreateMap<Payment, ApiModels.Payment>()
                 .ForMember(d => d.Method, opt => opt.MapFrom(s => s.Method.ToString()));

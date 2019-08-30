@@ -29,34 +29,6 @@ namespace DistripackAPI.Models
         public double Amount { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public string Type { get; private set; }
-    }
-
-    public class Payment : Transaction
-    {
-        public Payment(int checkingAccountId, PaymentMethod method, DateTime paymentAt, double amount)
-            : base(checkingAccountId, TransactionType.Payment, amount)
-        {
-            Method = method;
-            PaymentAt = paymentAt;
-
-        }
-
-        public PaymentMethod Method { get; private set; }
-        public DateTime PaymentAt { get; private set; }
-
-    }
-
-    public class Receipt : Transaction
-    {
-        public Receipt() : base(TransactionType.Receipt) { }
-
-        public Receipt(int checkingAccountId, int orderId, double amount)
-            : base(checkingAccountId, TransactionType.Receipt, amount)
-        {
-            OrderId = orderId;
-        }
-
-        public int OrderId { get; private set; }
-        public Order Order { get; private set; }
+        public double CurrentBalance { get; set; }
     }
 }

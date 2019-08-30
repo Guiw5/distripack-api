@@ -255,6 +255,8 @@ namespace DistripackAPI.Migrations
 
                     b.Property<DateTime>("CreatedAt");
 
+                    b.Property<double>("CurrentBalance");
+
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasMaxLength(20);
