@@ -73,5 +73,14 @@ namespace DistripackAPI.Models
             return CheckingAccount.AddReceipt(order);
 
         }
+
+        public CheckingAccount AddAccount(int amount)
+        {
+            if (CheckingAccount != null)
+                throw new Exception($"El cliente '{Id}' ya tiene una cuenta asociada");
+
+            CheckingAccount = new CheckingAccount(Id, amount);
+            return CheckingAccount;
+        }
     }
 }

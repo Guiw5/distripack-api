@@ -1,6 +1,7 @@
 ﻿using DistripackAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DistripackAPI.Persistence.Repository.Impl
@@ -17,6 +18,14 @@ namespace DistripackAPI.Persistence.Repository.Impl
             return await Context.CheckingAccounts
                 .Include(c => c.Client)
                 .ToListAsync();
+        }
+
+        public override async Task<CheckingAccount> Get(int id)
+        {
+            return await Context.CheckingAccounts
+                .Where(c => c.ClientId == id)
+                .Include(c => c.Client)
+                .SingleOrDefaultAsync();
         }
     }
 }

@@ -8,18 +8,37 @@ namespace DistripackAPI.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly IClientService clientService;
+        private readonly IAccountService accountService;
 
-        public AccountController(IClientService clientService)
+        public AccountController(IAccountService accountService)
         {
-            this.clientService = clientService;
+            this.accountService = accountService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAccounts()
         {
-            var accounts = await clientService.GetAccounts();
+            var accounts = await accountService.GetAccounts();
             return Ok(accounts);
+        }
+
+        [HttpGet]
+        [Route("{clientId}")]
+        public async Task<IActionResult> GetCheckingAccount(int clientId)
+        {
+            var account = await accountService.GetCheckingAccount(clientId);
+            if (account == null)
+                return NotFound($"El cliente {clientId} no existe o no tiene una cuenta asociada");
+
+            return Ok(account);
+        }
+
+        [HttpPost]
+        [Route("{clientId}")]
+        public async Task<IActionResult> SetCheckingAccount(int clientId, [FromBody] int amount)
+        {
+            var account = await accountService.SetCheckingAccount(clientId, amount);
+            return Ok(account);
         }
     }
 }

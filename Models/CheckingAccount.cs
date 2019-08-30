@@ -13,16 +13,17 @@ namespace DistripackAPI.Models
             Transactions = new Collection<Transaction>();
         }
 
-        public CheckingAccount(int clientId, double currentBalance) : this()
+        public CheckingAccount(int clientId, double initialAmount) : this()
         {
             ClientId = clientId;
-            CurrentBalance = currentBalance;
+            CurrentBalance = InitialAmount = initialAmount;
         }
 
         public int Id { get; set; }
         public int ClientId { get; private set; }
         public Client Client { get; private set; }
         public double CurrentBalance { get; private set; }
+        public double InitialAmount { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
         public ICollection<Transaction> Transactions { get; set; }

@@ -2,15 +2,16 @@
 using DistripackAPI.Controllers.ApiModels;
 using DistripackAPI.Persistence;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Client = DistripackAPI.Models.Client;
 
 namespace DistripackAPI.Services.Impl
 {
-    public class TransactionService : Service, ITransactionService
+    public class AccountService : Service, IAccountService
     {
-        public TransactionService(IMapper mapper, IUnitOfWork unitOfWork, ILogger<TransactionService> logger) :
+        public AccountService(IMapper mapper, IUnitOfWork unitOfWork, ILogger<AccountService> logger) :
             base(mapper, unitOfWork, logger)
         { }
 
@@ -37,13 +38,29 @@ namespace DistripackAPI.Services.Impl
 
         public async Task<CheckingAccount> GetCheckingAccount(int clientId)
         {
-            var account = await unitOfWork.CheckingAccounts.Find(c => c.ClientId == clientId);
+            var account = await unitOfWork.CheckingAccounts.Get(clientId);
             return mapper.Map<CheckingAccount>(account);
         }
 
-        public Task<CheckingAccount> SetCheckingAccount(int clientId, int amount)
+        public async Task<CheckingAccount> SetCheckingAccount(int clientId, int amount)
         {
-            throw new System.NotImplementedException();
+            var client = await unitOfWork.Clients.GetWithAccount(clientId);
+
+            if (client == null)
+                throw new Exception($"El cliente '{clientId}' no existe");
+
+            var account = client.AddAccount(amount);
+            await unitOfWork.Complete();
+            return mapper.Map<CheckingAccount>(account);
+
         }
+
+
+        public async Task<ICollection<CheckingAccount>> GetAccounts()
+        {
+            var accounts = await unitOfWork.CheckingAccounts.GetAll();
+            return mapper.Map<IList<CheckingAccount>>(accounts);
+        }
+
     }
 }

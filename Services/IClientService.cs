@@ -17,7 +17,5 @@ namespace DistripackAPI.Services
         Task<FullClient> GetClient(int id);
 
         Task<ClientHistory> GetClientHistory(int id);
-
-        Task<ICollection<Account>> GetAccounts();
     }
 }

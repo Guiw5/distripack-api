@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace DistripackAPI.Services
 {
-    public interface ITransactionService
+    public interface IAccountService
     {
         Task<Transaction> RegisterPayment(CreatePayment payment);
 
@@ -13,5 +13,7 @@ namespace DistripackAPI.Services
         Task<CheckingAccount> GetCheckingAccount(int clientId);
 
         Task<CheckingAccount> SetCheckingAccount(int clientId, int amount);
+
+        Task<ICollection<CheckingAccount>> GetAccounts();
     }
 }

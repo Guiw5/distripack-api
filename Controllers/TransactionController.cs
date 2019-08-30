@@ -9,19 +9,19 @@ namespace DistripackAPI.Controllers
     [ApiController]
     public class TransactionController : ControllerBase
     {
-        private readonly ITransactionService transactionService;
+        private readonly IAccountService accountService;
         private readonly IClientService clientService;
 
-        public TransactionController(ITransactionService transactionService, IClientService clientService)
+        public TransactionController(IAccountService accountService, IClientService clientService)
         {
-            this.transactionService = transactionService;
+            this.accountService = accountService;
             this.clientService = clientService;
         }
 
         [HttpPost]
         public async Task<IActionResult> RegisterPayment(CreatePayment payment)
         {
-            var transaction = await transactionService.RegisterPayment(payment);
+            var transaction = await accountService.RegisterPayment(payment);
             return Ok(transaction);
         }
 
@@ -35,24 +35,8 @@ namespace DistripackAPI.Controllers
             if (client == null)
                 return NotFound(clientId);
 
-            var transactions = await transactionService.GetTransactions(clientId);
+            var transactions = await accountService.GetTransactions(clientId);
             return Ok(transactions);
-        }
-
-        [HttpGet]
-        [Route("{clientId}/account")]
-        public async Task<IActionResult> GetCheckingAccount(int clientId)
-        {
-            var account = await transactionService.GetCheckingAccount(clientId);
-            return Ok(account);
-        }
-
-        [HttpPost]
-        [Route("{clientId}/account")]
-        public async Task<IActionResult> SetCheckingAccount(int clientId, [FromBody] int amount)
-        {
-            var account = await transactionService.SetCheckingAccount(clientId, amount);
-            return Ok(account);
         }
     }
 }
