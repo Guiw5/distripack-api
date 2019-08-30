@@ -44,6 +44,13 @@ namespace DistripackAPI.Services.Impl
             return clientHistory;
         }
 
+        public async Task<ICollection<Account>> GetAccounts()
+        {
+            var accounts = await unitOfWork.CheckingAccounts.GetAll();
+            return mapper.Map<IList<Account>>(accounts);
+
+        }
+
         public async Task<Client> Create(CreateClient apiClient)
         {
             var client = mapper.Map<Models.Client>(apiClient);
