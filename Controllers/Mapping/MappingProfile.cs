@@ -28,7 +28,9 @@ namespace DistripackAPI.Controllers.Mapping
                 .ForMember(d => d.State, opt => opt.MapFrom(s => s.State.ToString()));
 
             CreateMap<Client, ApiModels.Client>()
-                .ForMember(d => d.Nick, opt => opt.MapFrom(s => string.IsNullOrEmpty(s.Nick) ? s.FantasyName : s.Nick));
+                .ForMember(d => d.Nick, opt => opt.MapFrom(s => string.IsNullOrEmpty(s.Nick) ? s.FantasyName : s.Nick))
+                .ForMember(d => d.AccountId, opt => opt.MapFrom(s => s.CheckingAccount != null ? (int?)s.CheckingAccount.Id : null))
+                .ForMember(d => d.CurrentBalance, opt => opt.MapFrom(s => s.CheckingAccount != null ? (double?)s.CheckingAccount.CurrentBalance : null));
 
             CreateMap<Client, FullClient>();
             CreateMap<CreateThinClient, Client>();

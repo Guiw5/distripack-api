@@ -45,5 +45,12 @@ namespace DistripackAPI.Persistence.Repository.Impl
             return account.CurrentBalance;
 
         }
+
+        public async Task<ICollection<Client>> GetAll()
+        {
+            return await Context.Clients
+                .Include(c => c.CheckingAccount)
+                .ToListAsync();
+        }
     }
 }

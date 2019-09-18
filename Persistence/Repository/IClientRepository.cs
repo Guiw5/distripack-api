@@ -11,5 +11,7 @@ namespace DistripackAPI.Persistence.Repository
         Task<double> GetBalance(int id);
 
         Task<Client> GetWithAccount(int id);
+
+        Task<ICollection<Client>> GetAll();
     }
 }

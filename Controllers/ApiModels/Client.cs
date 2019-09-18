@@ -9,6 +9,10 @@ namespace DistripackAPI.Controllers.ApiModels
         public String Nick { get; set; }
 
         public String Email { get; set; }
+
+        public double? CurrentBalance { get; set; }
+
+        public int? AccountId { get; set; }
     }
 
 
