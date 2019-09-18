@@ -1,6 +1,7 @@
 ﻿using DistripackAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DistripackAPI.Persistence.Repository.Impl
@@ -19,7 +20,7 @@ namespace DistripackAPI.Persistence.Repository.Impl
         public async Task<ICollection<Product>> GetAll()
         {
             return await Context.Products
-                .Include(p => p.Skus)
+                .Include(p => p.Skus.OrderByDescending(s => s.Quantity))
                 .ToListAsync();
         }
     }
