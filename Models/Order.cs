@@ -10,17 +10,19 @@ namespace DistripackAPI.Models
     {
 
         public Order(CreateOrder apiOrder)
-            : this(apiOrder.ClientId.Value, apiOrder.Items, apiOrder.DeliveryDate, apiOrder.CreatedAt)
+            : this(apiOrder.ClientId.Value, apiOrder.Items, apiOrder.PreviousBalance, apiOrder.Discount, apiOrder.DeliveryDate, apiOrder.CreatedAt)
         { }
 
-        public Order(int clientId, ICollection<CreateItem> items, DateTime? deliveryDate, DateTime? createdAt = null)
+        public Order(int clientId, ICollection<CreateItem> items, double previousBalance, int discount, DateTime? deliveryDate, DateTime? createdAt = null)
         {
             ClientId = clientId;
             DeliveryDate = deliveryDate;
-            CreatedAt = createdAt ?? DateTime.Now;
+            UpdatedAt = DateTime.Now;
+            CreatedAt = createdAt ?? UpdatedAt;
             State = OrderState.Created;
             Items = items.Select(i => new Item(this, i)).ToList();
-            Discount = 0;
+            Discount = discount;
+            PreviousBalance = previousBalance;
         }
 
         public Order()
@@ -36,7 +38,7 @@ namespace DistripackAPI.Models
 
         public DateTime CreatedAt { get; private set; }
 
-        //public DateTime? UpdateAt { get; private set; }
+        public DateTime UpdatedAt { get; private set; }
 
         public DateTime? DeliveryDate { get; private set; }
 
@@ -46,9 +48,12 @@ namespace DistripackAPI.Models
 
         public ICollection<Item> Items { get; }
 
-        public Double Discount { get; private set; }
+        //[0-100] i.e: 20% => 20
+        public int Discount { get; private set; }
 
-        public Double Subtotal => Items.Sum(x => x.Subtotal);
+        public double PreviousBalance { get; private set; }
+
+        public Double Subtotal => (Items.Sum(x => x.Subtotal) + PreviousBalance) * (100 - Discount) / 100;
 
         public void Modify(UpdateOrder order)
         {
@@ -66,9 +71,11 @@ namespace DistripackAPI.Models
                     Add(item);
             }
 
-            //UpdateAt = DateTime.Now;
-            Discount = 0;
+            UpdatedAt = DateTime.Now;
             DeliveryDate = order.DeliveryDate;
+            if (order.Discount.HasValue) Discount = order.Discount.Value;
+            if (order.PreviousBalance.HasValue) PreviousBalance = order.PreviousBalance.Value;
+
         }
 
         private void Delete(Item i)
@@ -107,12 +114,12 @@ namespace DistripackAPI.Models
             Update(item.Id.Value, item.Price.Value, item.Quantity.Value);
         }
 
-        private void Add(int skuId, double price, int quantity, Double discount = 0)
+        private void Add(int skuId, double price, int quantity, int discount = 0)
         {
             Items.Add(new Item(Id, skuId, price, quantity, discount));
         }
 
-        private void Update(int id, double price, int quantity, Double discount = 0)
+        private void Update(int id, double price, int quantity, int discount = 0)
         {
             var item = Items.SingleOrDefault(i => i.Id == id);
 

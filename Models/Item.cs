@@ -13,7 +13,7 @@ namespace DistripackAPI.Models
 
         }
 
-        public Item(int orderId, int skuId, Double price, int quantity, Double discount)
+        public Item(int orderId, int skuId, Double price, int quantity, int discount)
         {
             OrderId = orderId;
             SkuId = skuId;
@@ -41,11 +41,12 @@ namespace DistripackAPI.Models
 
         public Double UnitPrice { get; private set; }
 
-        public Double Discount { get; private set; }
+        //[0-100]
+        public int Discount { get; private set; }
 
         public Double Subtotal => UnitPrice * Quantity * (100 - Discount) / 100;
 
-        public void Update(double price, int quantity, Double discount = 0)
+        public void Update(double price, int quantity, int discount = 0)
         {
             UnitPrice = price;
             Quantity = quantity;

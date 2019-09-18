@@ -117,7 +117,7 @@ namespace DistripackAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("Discount");
+                    b.Property<int>("Discount");
 
                     b.Property<int>("OrderId");
 
@@ -150,9 +150,13 @@ namespace DistripackAPI.Migrations
 
                     b.Property<DateTime?>("DeliveryDate");
 
-                    b.Property<double>("Discount");
+                    b.Property<int>("Discount");
+
+                    b.Property<double>("PreviousBalance");
 
                     b.Property<int>("State");
+
+                    b.Property<DateTime>("UpdatedAt");
 
                     b.HasKey("Id");
 

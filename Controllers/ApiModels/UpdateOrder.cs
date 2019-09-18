@@ -13,5 +13,9 @@ namespace DistripackAPI.Controllers.ApiModels
         public ICollection<UpdateItem> Items { get; set; }
 
         public DateTime? DeliveryDate { get; set; }
+
+        public int? Discount { get; set; }
+
+        public double? PreviousBalance { get; set; }
     }
 }

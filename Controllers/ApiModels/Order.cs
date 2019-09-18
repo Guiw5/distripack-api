@@ -13,7 +13,13 @@ namespace DistripackAPI.Controllers.ApiModels
 
         public String State { get; set; }
 
+        public int Discount { get; set; }
+
+        public double PreviousBalance { get; set; }
+
         public DateTime CreatedAt { get; set; }
+
+        public DateTime UpdatedAt { get; set; }
 
         public DateTime? DeliveryDate { get; set; }
 

@@ -16,5 +16,12 @@ namespace DistripackAPI.Controllers.ApiModels
 
         [Required]
         public DateTime DeliveryDate { get; set; }
+
+        [Required]
+        public double PreviousBalance { get; set; }
+
+        [Required]
+        public int Discount { get; set; }
+
     }
 }
