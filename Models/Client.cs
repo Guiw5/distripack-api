@@ -82,5 +82,13 @@ namespace DistripackAPI.Models
             CheckingAccount = new CheckingAccount(Id, amount);
             return CheckingAccount;
         }
+
+        public void SetInitialAmount(int amount)
+        {
+            if (CheckingAccount == null)
+                throw new Exception($"El cliente '{Id}' no tiene una cuenta asociada");
+
+            CheckingAccount.SetInitialAmount(amount);
+        }
     }
 }

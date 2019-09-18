@@ -56,6 +56,21 @@ namespace DistripackAPI.Services.Impl
         }
 
 
+        public async Task<CheckingAccount> SetInitialAmount(int clientId, int amount)
+        {
+            var client = await unitOfWork.Clients.GetWithAccount(clientId);
+
+            if (client == null)
+                throw new Exception($"El cliente '{clientId}' no existe");
+
+            client.SetInitialAmount(amount);
+            await unitOfWork.Complete();
+            return mapper.Map<CheckingAccount>(client.CheckingAccount);
+
+        }
+
+
+
         public async Task<ICollection<CheckingAccount>> GetAccounts()
         {
             var accounts = await unitOfWork.CheckingAccounts.GetAll();

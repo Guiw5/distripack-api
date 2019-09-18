@@ -14,6 +14,8 @@ namespace DistripackAPI.Services
 
         Task<CheckingAccount> SetCheckingAccount(int clientId, int amount);
 
+        Task<CheckingAccount> SetInitialAmount(int clientId, int amount);
+
         Task<ICollection<CheckingAccount>> GetAccounts();
     }
 }

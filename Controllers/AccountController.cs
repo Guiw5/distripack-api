@@ -40,5 +40,14 @@ namespace DistripackAPI.Controllers
             var account = await accountService.SetCheckingAccount(clientId, amount);
             return Ok(account);
         }
+
+        [HttpPut]
+        [Route("{clientId}")]
+        public async Task<IActionResult> SetInitialAmount(int clientId, [FromBody] int amount)
+        {
+            var account = await accountService.SetInitialAmount(clientId, amount);
+            return Ok(account);
+        }
+
     }
 }

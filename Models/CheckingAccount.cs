@@ -52,5 +52,10 @@ namespace DistripackAPI.Models
             transaction.CurrentBalance = CurrentBalance;
             Transactions.Add(transaction);
         }
+
+        internal void SetInitialAmount(int amount)
+        {
+            InitialAmount = amount;
+        }
     }
 }
