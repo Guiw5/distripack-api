@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -17,15 +18,18 @@ namespace DistripackAPI
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+        public IHostingEnvironment CurrentEnvironment { get; }
         private readonly ILogger logger;
 
-        public Startup(IConfiguration configuration, ILogger<Startup> logger)
+        public Startup(IConfiguration configuration, IHostingEnvironment env, ILogger<Startup> logger)
         {
             Configuration = configuration;
+            CurrentEnvironment = env;
             this.logger = logger;
         }
 
-        public IConfiguration Configuration { get; }
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -53,7 +57,11 @@ namespace DistripackAPI
             var connectionString = Configuration.GetConnectionString("AmazonDB");
 
             logger.LogInformation("Adding DB Context: {connectionString}", connectionString);
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AmazonDB")));
+            services.AddDbContextPool<ApplicationDbContext>(
+                options => options
+                    .UseSqlServer(connectionString, x => x.EnableRetryOnFailure())
+                    .ConfigureWarnings(w => w.Throw(RelationalEventId.QueryClientEvaluationWarning))
+                    .EnableSensitiveDataLogging(CurrentEnvironment.IsDevelopment()));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddCors(options => options.AddPolicy("AllowAllOrigins", builder => { builder.AllowAnyOrigin(); builder.AllowAnyMethod(); builder.AllowAnyHeader(); }));

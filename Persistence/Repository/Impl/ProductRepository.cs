@@ -19,9 +19,14 @@ namespace DistripackAPI.Persistence.Repository.Impl
 
         public async Task<ICollection<Product>> GetAll()
         {
-            return await Context.Products
-                .Include(p => p.Skus.OrderByDescending(s => s.Quantity))
+            var products = await Context.Products
+                .Include(p => p.Skus)
+                .OrderBy(p => p.Name)
                 .ToListAsync();
+
+            products.ForEach(p => p.Skus = p.Skus.OrderByDescending(s => s.Quantity).ToList());
+
+            return products;
         }
     }
 }

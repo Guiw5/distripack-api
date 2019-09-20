@@ -6,6 +6,8 @@ namespace DistripackAPI.Persistence
 {
     public class ApplicationDbContext : DbContext
     {
+        public DbSet<Sku> Skus { get; set; }
+
         public DbSet<Product> Products { get; set; }
 
         public DbSet<Client> Clients { get; set; }
