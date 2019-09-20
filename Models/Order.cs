@@ -53,7 +53,9 @@ namespace DistripackAPI.Models
 
         public double PreviousBalance { get; private set; }
 
-        public Double Subtotal => (Items.Sum(x => x.Subtotal) + PreviousBalance) * (100 - Discount) / 100;
+        public Double Subtotal => Items.Sum(x => x.Subtotal) * (100 - Discount) / 100;
+
+        public Double Total => Subtotal + PreviousBalance;
 
         public void Modify(UpdateOrder order)
         {
