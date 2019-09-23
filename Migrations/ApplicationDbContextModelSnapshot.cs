@@ -152,7 +152,7 @@ namespace DistripackAPI.Migrations
 
                     b.Property<int>("Discount");
 
-                    b.Property<double>("PreviousBalance");
+                    b.Property<double?>("PreviousBalance");
 
                     b.Property<int>("State");
 

@@ -13,7 +13,7 @@ namespace DistripackAPI.Models
             : this(apiOrder.ClientId.Value, apiOrder.Items, apiOrder.PreviousBalance, apiOrder.Discount, apiOrder.DeliveryDate, apiOrder.CreatedAt)
         { }
 
-        public Order(int clientId, ICollection<CreateItem> items, double previousBalance, int discount, DateTime? deliveryDate, DateTime? createdAt = null)
+        public Order(int clientId, ICollection<CreateItem> items, double? previousBalance, int discount, DateTime? deliveryDate, DateTime? createdAt = null)
         {
             ClientId = clientId;
             DeliveryDate = deliveryDate;
@@ -51,11 +51,11 @@ namespace DistripackAPI.Models
         //[0-100] i.e: 20% => 20
         public int Discount { get; private set; }
 
-        public double PreviousBalance { get; private set; }
+        public double? PreviousBalance { get; private set; }
 
         public Double Subtotal => Items.Sum(x => x.Subtotal) * (100 - Discount) / 100;
 
-        public Double Total => Subtotal + PreviousBalance;
+        public Double Total => Subtotal + (PreviousBalance ?? 0);
 
         public void Modify(UpdateOrder order)
         {
