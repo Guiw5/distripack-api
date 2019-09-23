@@ -3,6 +3,7 @@ using DistripackAPI.Controllers.ApiModels;
 using DistripackAPI.Helper;
 using DistripackAPI.Persistence;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -49,8 +50,14 @@ namespace DistripackAPI.Services.Impl
             var client = mapper.Map<Models.Client>(apiClient);
             var clientEntry = unitOfWork.Clients.Add(client);
             await unitOfWork.Complete();
-
-            emailSender.SendClientRegistrationEmail(clientEntry.Entity.Email, clientEntry.Entity.Nick);
+            try
+            {
+                emailSender.SendClientRegistrationEmail(clientEntry.Entity.Email, clientEntry.Entity.Nick);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Hubo un error al enviar email Nuevo Cliente");
+            }
             return mapper.Map<Client>(clientEntry.Entity);
 
         }
