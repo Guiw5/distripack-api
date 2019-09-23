@@ -108,6 +108,9 @@ namespace DistripackAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.ToTable("Clients");
                 });
 

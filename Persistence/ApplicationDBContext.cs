@@ -128,6 +128,9 @@ namespace DistripackAPI.Persistence
                 .WithOne(ca => ca.Client)
                 .HasForeignKey<CheckingAccount>(ca => ca.ClientId);
 
+            modelBuilder.Entity<Client>()
+                .HasIndex(c => c.Email)
+                .IsUnique();
 
             modelBuilder.Entity<CheckingAccount>().ToTable("CheckingAccount");
             modelBuilder.Entity<CheckingAccount>().HasKey(c => c.Id);
