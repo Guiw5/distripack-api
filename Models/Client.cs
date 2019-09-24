@@ -59,7 +59,7 @@ namespace DistripackAPI.Models
         public Payment AddPayment(CreatePayment payment)
         {
             if (CheckingAccount == null)
-                throw new Exception($"the client: { Id } doesn't have a checking account");
+                throw new Exception($"El cliente { Id } no tiene cuenta corriente");
 
             return CheckingAccount.AddPayment(payment);
 
