@@ -99,6 +99,7 @@ namespace DistripackAPI.Models
             {
                 State = OrderState.Delivered;
                 DeliveredAt = deliveryDate ?? DateTime.Now;
+                PreviousBalance = Client.CheckingAccount.CurrentBalance;
             }
             else
                 throw new Exception($"La orden { Id } ya se encuentra entregada");

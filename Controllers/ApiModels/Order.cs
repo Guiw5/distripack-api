@@ -15,7 +15,7 @@ namespace DistripackAPI.Controllers.ApiModels
 
         public int Discount { get; set; }
 
-        public double PreviousBalance { get; set; }
+        public double? PreviousBalance { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
