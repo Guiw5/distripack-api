@@ -7,6 +7,8 @@ namespace DistripackAPI.Services
 {
     public interface IOrderService
     {
+        Task<Order> Get(int orderId);
+
         Task<Order> Create(CreateOrder apiOrder);
 
         Task<Order> Modify(UpdateOrder order);

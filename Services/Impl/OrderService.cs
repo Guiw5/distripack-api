@@ -14,6 +14,19 @@ namespace DistripackAPI.Services.Impl
         public OrderService(IMapper mapper, IUnitOfWork unitOfWork, ILogger<OrderService> logger)
             : base(mapper, unitOfWork, logger) { }
 
+        public async Task<Order> Get(int id)
+        {
+            var order = await unitOfWork.Orders.Get(id);
+            if (order == null)
+            {
+                logger.LogWarning($"No existe la orden con Id: {id}");
+                return null;
+            }
+
+            return mapper.Map<Order>(order);
+        }
+
+
         public async Task<Order> Create(CreateOrder apiOrder)
         {
             var client = await unitOfWork.Clients.Get(apiOrder.ClientId.Value);

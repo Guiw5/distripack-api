@@ -18,6 +18,19 @@ namespace DistripackAPI.Controllers
             this.orderService = orderService;
         }
 
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetOrder(int id)
+        {
+            var order = await orderService.Get(id);
+
+            if (order == null)
+                return NotFound(id);
+
+            return Ok(order);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrder apiOrder)
         {
