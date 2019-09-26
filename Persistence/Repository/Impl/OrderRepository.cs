@@ -64,8 +64,9 @@ namespace DistripackAPI.Persistence.Repository.Impl
 
         public async Task<ICollection<Order>> GetLatestDelivered()
         {
-            var aMonthAgo = DateTime.Today.AddDays(-30);
-            return await Context.Orders.Where(o => OrderState.Delivered.Equals(o.State) && o.DeliveredAt.Value.CompareTo(aMonthAgo) > 0)
+            return await Context.Orders
+                .Where(o => OrderState.Delivered.Equals(o.State) &&
+                            EF.Functions.DateDiffDay(o.DeliveredAt.Value, DateTime.Today) < 30)
                 .Include(o => o.Items)
                     .ThenInclude(i => i.Sku)
                 .OrderByDescending(o => o.DeliveryDate)
