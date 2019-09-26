@@ -17,7 +17,7 @@ namespace DistripackAPI.Persistence.Repository.Impl
 
         public override async Task<Order> Get(int id)
         {
-            return await Context.Orders.Include(o => o.Items).SingleOrDefaultAsync(o => o.Id == id);
+            return await Context.Orders.Include(o => o.Items).ThenInclude(i => i.Sku).SingleOrDefaultAsync(o => o.Id == id);
         }
 
         public async Task<ICollection<Order>> GetAllWithSkus()
