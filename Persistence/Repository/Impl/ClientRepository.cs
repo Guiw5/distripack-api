@@ -12,6 +12,13 @@ namespace DistripackAPI.Persistence.Repository.Impl
         {
         }
 
+        public async override Task<Client> Get(int id)
+        {
+            return await Context.Clients
+                .Include(c => c.CheckingAccount)
+                .SingleOrDefaultAsync(c => c.Id == id);
+        }
+
         public async Task<ICollection<Order>> FindHistory(int clientId)
         {
             return await Context.Orders

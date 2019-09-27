@@ -17,12 +17,18 @@ namespace DistripackAPI.Persistence.Repository.Impl
 
         public override async Task<Order> Get(int id)
         {
-            return await Context.Orders.Include(o => o.Items).ThenInclude(i => i.Sku).SingleOrDefaultAsync(o => o.Id == id);
+            return await Context.Orders
+                .Include(o => o.Items)
+                    .ThenInclude(i => i.Sku)
+                .SingleOrDefaultAsync(o => o.Id == id);
         }
 
         public async Task<ICollection<Order>> GetAllWithSkus()
         {
-            return await Context.Orders.Include(p => p.Items).ThenInclude(i => i.Sku).ToListAsync();
+            return await Context.Orders
+                .Include(p => p.Items)
+                    .ThenInclude(i => i.Sku)
+                .ToListAsync();
         }
 
         public async Task<ICollection<Order>> FindAllWithSkus(IList<int> orderIds)
@@ -56,7 +62,7 @@ namespace DistripackAPI.Persistence.Repository.Impl
         {
             return await Context.Orders.Where(o => OrderState.Delivered.Equals(o.State))
                 .Include(o => o.Items)
-                .ThenInclude(i => i.Sku)
+                    .ThenInclude(i => i.Sku)
                 .OrderByDescending(o => o.DeliveryDate)
                 .ToListAsync();
         }

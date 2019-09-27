@@ -16,17 +16,12 @@ namespace DistripackAPI.Controllers.ApiModels
     }
 
 
-    public class FullClient : ApiModel
+    public class FullClient : Client
     {
-        public int Id { get; set; }
 
         public String FirstName { get; set; }
 
         public String LastName { get; set; }
-
-        public String Nick { get; set; }
-
-        public String Email { get; set; }
 
         public String BusinessName { get; set; }
 
