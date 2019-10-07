@@ -28,5 +28,16 @@ namespace DistripackAPI.Persistence.Repository.Impl
 
             return products;
         }
+
+        public async Task<ICollection<Sku>> GetSkus()
+        {
+            var skus = await Context.Skus
+                .Include(s => s.Product)
+                .OrderBy(s => s.Product.Name)
+                .ThenByDescending(s => s.Quantity)
+                .ToListAsync();
+
+            return skus;
+        }
     }
 }

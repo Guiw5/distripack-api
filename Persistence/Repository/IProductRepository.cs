@@ -9,5 +9,7 @@ namespace DistripackAPI.Persistence.Repository
         Task<Product> GetWithSkus(int id);
 
         Task<ICollection<Product>> GetAll();
+
+        Task<ICollection<Sku>> GetSkus();
     }
 }

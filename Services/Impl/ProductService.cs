@@ -23,6 +23,11 @@ namespace DistripackAPI.Services.Impl
             return mapper.Map<IList<Product>>(products);
         }
 
+        public async Task<ICollection<Sku>> GetSkus()
+        {
+            var skus = await unitOfWork.Products.GetSkus();
+            return mapper.Map<IList<Sku>>(skus);
+        }
 
     }
 }

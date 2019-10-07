@@ -7,5 +7,6 @@ namespace DistripackAPI.Services
     public interface IProductService
     {
         Task<ICollection<Product>> GetAll();
+        Task<ICollection<Sku>> GetSkus();
     }
 }

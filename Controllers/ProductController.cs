@@ -21,5 +21,14 @@ namespace DistripackAPI.Controllers
             var products = await productService.GetAll();
             return Ok(products);
         }
+
+
+        [HttpGet]
+        [Route("~/api/skus")]
+        public async Task<IActionResult> GetSkus()
+        {
+            var products = await productService.GetSkus();
+            return Ok(products);
+        }
     }
 }
