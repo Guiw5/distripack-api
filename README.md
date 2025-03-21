@@ -171,7 +171,7 @@ As this is a completed project, support is limited to:
 
 For any inquiries, please:
 - Open an issue in the repository
-- Contact [YOUR_EMAIL]
+- Contact wagner.guido.5@gmail.com
 - Check the [documentation](docs/README.md)
 
 ## 🔍 API Documentation
